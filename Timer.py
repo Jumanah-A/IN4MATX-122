@@ -10,9 +10,14 @@ class Timer(object):
         print("STARTING TIMER")
         x = threading.Thread(target = self.thread_function)
         x.start()
+        print("Timer finished starting")
 
     def thread_function(self):
-        time.sleep(self.duration)
+        for x in range(self.duration):
+            print(self.timeLeft)
+            time.sleep(1)
+            self.timeLeft -= 1
+        print(self.timeLeft)
         self.stopGame()
 
     def stopGame(self):
