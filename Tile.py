@@ -4,5 +4,8 @@ class Tile:
         self.color = color
         self.name = name
 
-    def get_tile():
+    def getName():
+        pass
+
+    def __eq__(self, __o: object) -> bool:
         pass
