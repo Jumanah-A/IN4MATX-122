@@ -6,7 +6,7 @@ class VerticalMatch(IMatch):
         for row in range(len(board)):
             for col in range(len(board[row])):
                 for x, y in self.checkForMatch(board, row, col):
-                    matches.append([x, y])
+                    matches.append((x, y))
                 # if len(self.checkForMatch(board, row, col)) > 0:
                 #     # Small issue: returns a 3D list; list of a list of coordinates
                 #     # might be good to change this later for simplicity
@@ -14,21 +14,21 @@ class VerticalMatch(IMatch):
         return matches
     def checkForMatch(self, board, row, col):
         startingTile = board[row][col]
-        if startingTile == self.emptyTile:
+        if startingTile in self.no_matching_tiles:
             return []
         up = row-1
         down = row+1
         matchLocations = []
-        matchLocations.append([row,col])
+        matchLocations.append((row,col))
 
         # check above
         while up >= 0 and board[up][col] == startingTile:
-            matchLocations.append([up,col])
+            matchLocations.append((up,col))
             up -= 1
 
         # check below
         while down < len(board) and board[down][col] == startingTile:
-            matchLocations.append([down, col])
+            matchLocations.append((down, col))
             down += 1
 
         if len(matchLocations) >= self.min_matching_length:

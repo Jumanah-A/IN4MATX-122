@@ -10,6 +10,7 @@ class Timer(object):
 
     def startTimer(self):
         try:
+            self.timeLeft = self.duration
             self.timerThread.start()
         except RuntimeError:
             print("ERROR: Timer has already started")
@@ -33,13 +34,49 @@ class Timer(object):
             self._stop_event.set()
             time.sleep(1)
             self.timerThread.join()
-            self.timerThread = threading.Thread(target=self._thread_function)
+        self.timerThread = threading.Thread(target=self._thread_function)
         self.timeLeft = self.duration
         self._stop_event.clear()
+        print("RESET")
+
+    def setDuration(self, duration):
+        self.duration = duration
+
+    def getRemainingTime(self):
+        return self.timeLeft
 
 
 if __name__ == "__main__":
-    #print("TESTING TIMER")
+    # Test Case 1: Timer runs same time as main and finishes (PASSED)
+    # timer = Timer()
+    # timer.startTimer()
+    # time.sleep(3)
+    # print("3 SECONDS HAVE PASSED")
+    # time.sleep(4)
+    # print(f'REMAINING TIME: {timer.getRemainingTime()}')
+
+    # Test Case 2: Timer runs, finishes running, resets, and runs again fine (PASSED)
+    # timer = Timer()
+    # timer.startTimer()
+    # time.sleep(3)
+    # print(f'REMAINING TIME: {timer.getRemainingTime()}')
+    # time.sleep(8)
+    # print("STARTING AGAIN")
+    # timer.resetTimer()
+    # timer.startTimer()
+    # time.sleep(6)
+    # print(f'REMAINING TIME: {timer.getRemainingTime()}')
+
+    # Test Case 3: Timer is reset during run to stop it (PASSED)
+    # timer = Timer()
+    # timer.startTimer()
+    # time.sleep(3)
+    # print("Time to Restart Timer")
+    # timer.resetTimer()
+    # time.sleep(2)
+    # print("hello")
+
+    # Test Case 4: Timer is reset during run, and then ran again
     timer = Timer()
     timer.startTimer()
     time.sleep(3)
@@ -47,3 +84,5 @@ if __name__ == "__main__":
     time.sleep(2)
     timer.startTimer()
     print("TIMER Should not have finished yet")
+    time.sleep(4)
+    print("TIMER STILL GRINDING")
