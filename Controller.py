@@ -39,7 +39,3 @@ class Controller(object):
 				return coordinates, direction
 		
 		return (-1,-1)
-
-			
-			
-
