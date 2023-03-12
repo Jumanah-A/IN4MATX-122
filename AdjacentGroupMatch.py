@@ -27,7 +27,7 @@ class AdjacentGroupMatch(IMatch):
 
         matches = set()
         startingTile = board[row][col]
-        if startingTile == self.emptyTile:
+        if startingTile in self.no_matching_tiles:
             return set()
 
         checkForMatchesH(board, row, col, matches, startingTile)

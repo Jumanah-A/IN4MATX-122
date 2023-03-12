@@ -15,7 +15,7 @@ class HorizontalMatch(IMatch):
 
     def checkForMatch(self, board, row, col):
         startingTile = board[row][col]
-        if startingTile == self.emptyTile:
+        if startingTile in self.no_matching_tiles:
             return []
         right = col+1
         left = col-1

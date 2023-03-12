@@ -14,7 +14,7 @@ class VerticalMatch(IMatch):
         return matches
     def checkForMatch(self, board, row, col):
         startingTile = board[row][col]
-        if startingTile == self.emptyTile:
+        if startingTile in self.no_matching_tiles:
             return []
         up = row-1
         down = row+1
