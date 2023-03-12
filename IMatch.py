@@ -8,4 +8,3 @@ class IMatch:
     def checkMatch(self, board: list) -> list:
         """checks for matches across the whole board"""
         pass
-
