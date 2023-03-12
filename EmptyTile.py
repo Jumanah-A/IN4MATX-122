@@ -1,3 +1,6 @@
-class EmptyTile:
-    def __init__():
-        pass
+import Tile
+
+
+class EmptyTile(Tile):
+    def __init__(self):
+        super().__init__(None, None, None)

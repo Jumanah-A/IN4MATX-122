@@ -1,5 +1,6 @@
 import EmptyTile
 import Tile
+import TileFactory
 
 
 class Board:
@@ -12,25 +13,25 @@ class Board:
     #   [tile, tile, tile]
     # ]
     #
-    def __init__(self, numRows: int, numCols: int) -> None:
+    def __init__(self, numRows: int, numCols: int, tileFactory: TileFactory) -> None:
         self.numRows = numRows
         self.numCols = numCols
+        self.tileFactory = tileFactory
         self.grid = []
 
-    # ???
+    # Initializes new grid of random tiles
     def createBoard(self):
-        self.grid = [[EmptyTile() for x in range(self.numCols)]
+        self.grid = [[self.generateRandomTiles() for x in range(self.numCols)]
                      for y in range(self.numRows)]
-
-    # Set grid to empty tiles.. or set to initial board state?
-    def resetBoard(self):
-        pass
 
     # Shift tiles down by calling gravity() and populates empty tiles with fillBoard()
     def updateBoard(self, setOfCoords):
         self.removeTiles(setOfCoords)
+        GUI.updateDisplay()
         self.applyGravity()
+        GUI.updateDisplay()
         self.fillBoard()
+        GUI.updateDisplay()
 
     # return bool
     def isValidSwap(self, tile: Tile, direction: str) -> bool:
@@ -65,12 +66,12 @@ class Board:
     def removeTiles(self, coords: set):
         # remove a set of tiles
         # consider passing in a set of coordinates, not tiles
-
-        pass
+        for (x, y) in coords:
+            self.grid[y][x] = EmptyTile()
 
     # uses tile factory to create a random tile
     def generateRandomTile():
-        pass
+        tileFactory.createRandomTile()
 
     # shifts tiles down to replace empty space
     def applyGravity(self):
