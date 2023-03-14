@@ -1,12 +1,14 @@
 import Tile
+import random
+
 
 class TileFactory:
     def __init__(self, tiles) -> None:
         # ['candycane', 'star']
         self.tiles = tiles
 
-    def createTile(shape, color, name):
+    def createTile(self,shape, color, name):
         return Tile(shape, color, name)
 
-    def createRandomTile():
-        pass
+    def createRandomTile(self):
+        return random.choice(self.tiles)
