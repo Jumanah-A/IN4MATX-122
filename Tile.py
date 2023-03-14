@@ -1,11 +1,13 @@
 class Tile:
-    def __init__(self, shape, color, name) -> None:
+    def __init__(self, shape, color) -> None:
         self.shape = shape
         self.color = color
-        self.name = name
 
-    def getName():
-        pass
+    def getName(self):
+        name = self.color + " "+ self.shape
+        return name
 
-    def __eq__(self, __o: object) -> bool:
-        pass
+    def __eq__(self, __o) -> bool:
+        if(self.shape == __o.shape and self.color == __o.color):
+            return True
+        return False
