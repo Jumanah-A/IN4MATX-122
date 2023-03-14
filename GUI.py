@@ -51,11 +51,16 @@ EMPTY_SPACE = -1 # an arbitrary, nonpositive value
 ROWABOVEBOARD = 'row above board' # an arbitrary, noninteger value
 
 def main():
-    global FPSCLOCK, DISPLAYSURF, GEMIMAGES, GAMESOUNDS, BASICFONT, BOARDRECTS
+##===================================================================================================
+    global FPSCLOCK
+##===================================================================================================
+    global DISPLAYSURF, GEMIMAGES, GAMESOUNDS, BASICFONT, BOARDRECTS
 
     # Initial set up.
     pygame.init()
+##===================================================================================================
     FPSCLOCK = pygame.time.Clock()
+##===================================================================================================
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('INF122 FINAL PROJECT')
     BASICFONT = pygame.font.Font('freesansbold.ttf', 36)
@@ -63,17 +68,17 @@ def main():
     # Load the images
     GEMIMAGES = []
     for i in range(1, NUMGEMIMAGES+1):
-        gemImage = pygame.image.load('gem%s.png' % i)
+        gemImage = pygame.image.load('assets/gem%s.png' % i)
         if gemImage.get_size() != (GEMIMAGESIZE, GEMIMAGESIZE):
             gemImage = pygame.transform.smoothscale(gemImage, (GEMIMAGESIZE, GEMIMAGESIZE))
         GEMIMAGES.append(gemImage)
 
     # Load the sounds.
     GAMESOUNDS = {}
-    GAMESOUNDS['bad swap'] = pygame.mixer.Sound('badswap.wav')
+    GAMESOUNDS['bad swap'] = pygame.mixer.Sound('assets/badswap.wav')
     GAMESOUNDS['match'] = []
     for i in range(NUMMATCHSOUNDS):
-        GAMESOUNDS['match'].append(pygame.mixer.Sound('match%s.wav' % i))
+        GAMESOUNDS['match'].append(pygame.mixer.Sound('assets/match%s.wav' % i))
 
     # Create pygame.Rect objects for each board space to
     # do board-coordinate-to-pixel-coordinate conversions.
@@ -91,9 +96,14 @@ def main():
     my_theme = pygame_menu.themes.THEME_BLUE.copy()
     my_theme.title_font = pygame_menu.font.FONT_FRANCHISE
     my_theme.widget_font = pygame_menu.font.FONT_FRANCHISE
-    menu = pygame_menu.Menu('INF122 FINAL PROJECT - BEJEWELED', 1000,600, theme=my_theme)
-    menu.add.button('Play', runGame)
+    menu = pygame_menu.Menu('INF122 FINAL PROJECT', 1000,600, theme=my_theme)
+##===================================================================================================
+##on click should start a game object of either candy crush or bejeweled??
+    menu.add.button('Play Candy Crush', runGame)
+    menu.add.button('Play Bejeweled', runGame)
+##===================================================================================================
     menu.add.button('Quit', pygame_menu.events.EXIT)
+
     menu.mainloop(surface)
 
 
@@ -251,14 +261,17 @@ def getSwappingGems(board, firstXY, secondXY):
         return None, None
     return firstGem, secondGem
 
-
+###############################################################################################
+###############################################################################################
+## needs to be replaced
 def getBlankBoard():
     # Create and return a blank board data structure.
     board = []
     for x in range(BOARDWIDTH):
         board.append([EMPTY_SPACE] * BOARDHEIGHT)
     return board
-
+###############################################################################################
+###############################################################################################
 
 def canMakeMove(board):
     # Return True if the board is in a state where a matching
