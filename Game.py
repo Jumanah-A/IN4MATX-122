@@ -2,9 +2,10 @@ import Controller
 import Board
 import Player
 import pygame
+from abc import ABC, abstractmethod
 
 
-class Game:
+class Game(ABC):
     def __init__(self, playerCount, matchingLogic, tileFactory, timer=None, moveCount=None):
         self.players = [Player() for i in range(playerCount)]
         self.playerTurn = 0
@@ -14,12 +15,14 @@ class Game:
         self.controller = Controller()
         self.moveCount = moveCount
 
+    @abstractmethod
     def resetGame(self):
         self.playerTurn = 0
         self.board.createBoard()
         for player in self.players:
             player.resetScore()
 
+    @abstractmethod
     def start(self):
         self.board.createBoard()
         running = True

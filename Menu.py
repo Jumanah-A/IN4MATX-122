@@ -9,6 +9,7 @@ class Menu:
 
     #create new instance/start()  of current game
     def restartGame():
+        #chosenGame.resetGame()
         pass
 
 def main():
