@@ -17,6 +17,7 @@
 
 # if __name__ == "__main__":
 #     main()
+import pygame_menu
 
 class Menu: 
     def __init__(self, GUI) -> None:

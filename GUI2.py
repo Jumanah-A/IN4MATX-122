@@ -1,5 +1,7 @@
-import random, time, pygame, sys, copy, pygame, pygame_menu
-import CandyCrush, Bejeweled
+import random, time, pygame, sys, copy, pygame
+from CandyCrush import CandyCrush
+from Bejeweled import Bejeweled
+from Menu import Menu
 
 FPS = 30 # frames per second to update the screen
 WINDOWWIDTH = 1000  # width of the program's window, in pixels
@@ -53,51 +55,72 @@ class GUI:
     def __init__(self):
         self.pygame = pygame
         self.pygame.init()
-        self.surface = self.pygame.display.set_mode((1000, 600))
+        self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
+        self.BOARDRECTS = []
 
     def main(self):
+        # Load the images
+        GEMIMAGES = []
+        for i in range(1, NUMGEMIMAGES+1):
+            gemImage = pygame.image.load('assets/gem%s.png' % i)
+            if gemImage.get_size() != (GEMIMAGESIZE, GEMIMAGESIZE):
+                gemImage = pygame.transform.smoothscale(gemImage, (GEMIMAGESIZE, GEMIMAGESIZE))
+            GEMIMAGES.append(gemImage)
+
+        # Create pygame.Rect objects for each board space to
+        # do board-coordinate-to-pixel-coordinate conversions.
+        for x in range(BOARDWIDTH):
+            self.BOARDRECTS.append([])
+            for y in range(BOARDHEIGHT):
+                r = pygame.Rect((XMARGIN + (x * GEMIMAGESIZE),
+                                 YMARGIN + (y * GEMIMAGESIZE),
+                                 GEMIMAGESIZE,
+                                 GEMIMAGESIZE))
+                self.BOARDRECTS[x].append(r)
+
+
+        # DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         menu = Menu(self)
-        menu.mainloop(self.surface)
+        menu.mainloop(self.DISPLAYSURF)
 
     def startCandyCrush1P(self):
-        game = CandyCrush(1)
+        # game = CandyCrush(1)
         # game.start()
         pass
 
     def startCandyCrush2P(self):
-        game = CandyCrush(2)
+        # game = CandyCrush(2)
         # game.start()
         pass
 
     def startBejeweled(self):
-        game = Bejeweled()
-        pass
-
-    def getTileCoords(mouseX,mouseY):
+        # game = Bejeweled(1)
+        # game.start()
         pass
 
     def drawBoard(board):
-        pass
+        for x in range(BOARDWIDTH):
+            for y in range(BOARDHEIGHT):
+                self.pygame.draw.rect(self.DISPLAYSURF, GRIDCOLOR, self.BOARDRECTS[x][y], 1)
+                gemToDraw = board[x][y]
+                self.DISPLAYSURF.blit(GEMIMAGES[gemToDraw], self.BOARDRECTS[x][y])
 
     def drawCondition(num):
-        pass
+        scoreImg = BASICFONT.render(str(num), 1, SCORECOLOR)
+        scoreRect = scoreImg.get_rect()
+        scoreRect.bottomleft = (10, WINDOWHEIGHT - 6)
+        self.DISPLAYSURF.blit(scoreImg, scoreRect)
 
+    def getTileCoords(mouseX, mouseY):
+    # See if the mouse click was on the board
+    for x in range(BOARDWIDTH):
+        for y in range(BOARDHEIGHT):
+            if self.BOARDRECTS[x][y].collidepoint(mouseX, mouseY):
+                return {'x': x, 'y': y}
+    return None # Click was not on the board.
 
-
-class Menu: 
-    def __init__(self, GUI):
-        my_theme = pygame_menu.themes.THEME_BLUE.copy()
-        my_theme.title_font = pygame_menu.font.FONT_FRANCHISE
-        my_theme.widget_font = pygame_menu.font.FONT_FRANCHISE
-        self.menu = pygame_menu.Menu('INF122 FINAL PROJECT', 1000,600, theme=my_theme)
-
-        self.menu.add.button('Play Candy Crush 1P', GUI.startCandyCrush1P)
-        self.menu.add.button('Play Candy Crush 2P', GUI.startCandyCrush2P)
-        self.menu.add.button('Play Bejeweled', GUI.startBejeweled)
-        self.menu.add.button('Quit', pygame_menu.events.EXIT)
-
-    def mainloop(self, surface):
-        self.menu.mainloop(surface)
+    def highlightSpace(mouseX, mouseY):
+        self.pygame.draw.rect(self.DISPLAYSURF, HIGHLIGHTCOLOR, self.BOARDRECTS[x][y], 4)
 
 if __name__ == '__main__':
     gui = GUI()
