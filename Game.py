@@ -1,9 +1,8 @@
 import Controller
 import Board
 import Player
-import pygame
+import pygame, pygame_menu
 from abc import ABC, abstractmethod
-
 
 class Game(ABC):
     def __init__(self, playerCount, matchingLogic, tileFactory, timer=None, moveCount=None):
@@ -57,3 +56,7 @@ class Game(ABC):
             if self.timer != None:
                 if self.timer.getTime() <= 0:
                     running = False
+
+if __name__ == '__main__':
+    game = Game(1, 2,3)
+    game.main()

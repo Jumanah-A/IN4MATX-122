@@ -1,6 +1,6 @@
 import HorizontalMatch
 import VerticalMatch
-import Game
+from Game import Game
 import Timer
 import BejeweledTileFactory
 
