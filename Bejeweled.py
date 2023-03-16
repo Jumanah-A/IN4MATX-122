@@ -6,9 +6,10 @@ import BejeweledTileFactory
 
 
 class Bejeweled(Game):
-    def __init__(self, playerCount):
+    def __init__(self):
         matchingLogic = [HorizontalMatch(), VerticalMatch()]
         timer = Timer(180)
+        playerCount=1
         gems = ["red square", "yellow rhombus", "green circle", "blue diamond", "purple triangle", "white ball"]
         super().__init__(playerCount, matchingLogic, BejeweledTileFactory(gems), timer=timer)
 
