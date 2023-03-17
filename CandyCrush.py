@@ -28,14 +28,14 @@ class CandyCrush(Game):
         running = True
 
         while (running):
+            self.gui.drawBoard(self.board.grid)
             coordinates, direction = self.controller.getInput()
 
             if coordinates == (-1, 0):
                 running = False
 
             elif coordinates != (-1, -1):
-                coordinates = self.gui.getTileCoords(
-                    coordinates[0], coordinates[1])
+                coordinates = self.gui.getTileCoords(coordinates[0], coordinates[1])
                 if self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
 
@@ -43,7 +43,7 @@ class CandyCrush(Game):
                     while (not isEmpty):
                         tiles = set()
                         for matchLogic in self.matchingLogic:
-                            tiles.update(matchLogic.checkMatches(self.board))
+                            tiles.update(matchLogic.checkMatch(self.board.grid))
                         if not tiles:
                             isEmpty = True
                         else:
@@ -59,3 +59,4 @@ class CandyCrush(Game):
             if self.timer != None:
                 if self.timer.getTime() <= 0:
                     running = False
+            

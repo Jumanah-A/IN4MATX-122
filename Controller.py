@@ -11,7 +11,7 @@ class Controller(object):
 
         for event in pygame.event.get():
             if event.type == QUIT:
-                return (-1, 0)
+                return (-1, 0), ""
 
             if clicked == False and event.type == MOUSEBUTTONDOWN:
                 clicked = True
@@ -39,4 +39,4 @@ class Controller(object):
             if direction != "":
                 return coordinates, direction
 
-        return (-1, -1)
+        return (-1, -1), ""

@@ -11,8 +11,8 @@ FPS = 30  # frames per second to update the screen
 WINDOWWIDTH = 1000  # width of the program's window, in pixels
 WINDOWHEIGHT = 600  # height in pixels
 
-BOARDWIDTH = 8  # how many columns in the board
-BOARDHEIGHT = 8  # how many rows in the board
+BOARDWIDTH = 5  # how many columns in the board
+BOARDHEIGHT = 5  # how many rows in the board
 GEMIMAGESIZE = 64  # width & height of each space in pixels
 
 # NUMGEMIMAGES is the number of gem types. You will need .png image
@@ -82,6 +82,7 @@ class GUI:
         menu.mainloop(self.DISPLAYSURF)
 
     def startCandyCrush1P(self):
+        self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         game = CandyCrush(1, self)
         game.start()
 
@@ -98,11 +99,12 @@ class GUI:
             for y in range(BOARDHEIGHT):
                 self.pygame.draw.rect(
                     self.DISPLAYSURF, GRIDCOLOR, self.BOARDRECTS[x][y], 1)
-                tileToDraw = board[y][x]
+                tileToDraw = board[x][y]
                 tileColor = tileToDraw.color
                 tileShape = tileToDraw.shape
-                self.DISPLAYSURF.blit(self.DISPLAYSURF,
-                                      'assets/' + tileColor + '.png', self.BOARDRECTS[x][y])
+                asset = pygame.image.load('assets/' + tileColor + '.png')
+                self.DISPLAYSURF.blit(asset, self.BOARDRECTS[x][y])
+        pygame.display.update()
 
     def drawCondition(self, num):
         scoreImg = BASICFONT.render(str(num), 1, SCORECOLOR)
@@ -115,7 +117,7 @@ class GUI:
         for x in range(BOARDWIDTH):
             for y in range(BOARDHEIGHT):
                 if self.BOARDRECTS[x][y].collidepoint(mouseX, mouseY):
-                    return {'x': x, 'y': y}
+                    return (x, y)
         return None  # Click was not on the board.
 
     def highlightSpace(self, mouseX, mouseY):

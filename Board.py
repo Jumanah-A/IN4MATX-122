@@ -23,9 +23,6 @@ class Board:
     def createBoard(self):
         self.grid = [[self.generateRandomTile() for x in range(self.numCols)]
                      for y in range(self.numRows)]
-        for row in range(self.numRows):
-            for col in range(self.numCols):
-                print(self.grid[col][row].getName())
 
     # Shift tiles down by calling gravity() and populates empty tiles with fillBoard()
     def updateBoard(self, setOfCoords):
@@ -40,9 +37,9 @@ class Board:
     def isValidSwap(self, tile_coords, direction: str) -> bool:
         (x, y) = tile_coords
         if ((direction == "left" and x == 0) or
-                (direction == "right" and x == (self.col - 1)) or
+                (direction == "right" and x == (self.numCols - 1)) or
                 (direction == "up" and y == 0) or
-                (direction == "down" and (y == self.row - 1))):
+                (direction == "down" and (y == self.numRows - 1))):
             return False
         else:
             return True
@@ -50,8 +47,10 @@ class Board:
     # swaps tiles
     def swapTile(self, tile_coords, direction):
         grid = self.grid
+        print(tile_coords)
         (x_1, y_1) = tile_coords
         (x_2, y_2) = (x_1, y_1)
+        print(x_2, y_2)
         if direction == "left":
             x_2 -= 1
         elif direction == "right":
@@ -63,6 +62,7 @@ class Board:
         else:
             print("Direction not valid")
 
+        tile = grid[y_1][x_1]
         grid[y_1][x_1] = grid[y_2][x_2]
         grid[y_2][x_2] = tile
 
