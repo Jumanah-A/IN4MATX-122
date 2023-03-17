@@ -19,12 +19,14 @@
 #     main()
 import pygame_menu
 
-class Menu: 
+
+class Menu:
     def __init__(self, GUI) -> None:
         my_theme = pygame_menu.themes.THEME_BLUE.copy()
         my_theme.title_font = pygame_menu.font.FONT_FRANCHISE
         my_theme.widget_font = pygame_menu.font.FONT_FRANCHISE
-        self.menu = pygame_menu.Menu('INF122 FINAL PROJECT', 1000,600, theme=my_theme)
+        self.menu = pygame_menu.Menu(
+            'INF122 FINAL PROJECT', 1000, 600, theme=my_theme)
 
         self.menu.add.button('Play Candy Crush 1P', GUI.startCandyCrush1P)
         self.menu.add.button('Play Candy Crush 2P', GUI.startCandyCrush2P)

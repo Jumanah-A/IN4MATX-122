@@ -7,8 +7,15 @@ class TileFactory:
         # ['candycane', 'star']
         self.tiles = tiles
 
-    def createTile(self,shape, color, name):
-        return Tile(shape, color, name)
+    def createTile(self, shape, color):
+        name = color + " " + shape
+        if (name in self.tiles):
+            return Tile(shape, color)
+        else:
+            print("Error: Tile not in Tile Factory")
 
     def createRandomTile(self):
-        return random.choice(self.tiles)
+        tileName = random.choice(self.tiles)
+        color = tileName.split()[0]
+        shape = tileName.split()[1]
+        return Tile(shape, color)

@@ -1,6 +1,10 @@
 from IMatch import IMatch
 
+
 class HorizontalMatch(IMatch):
+    def __init__(self):
+        super().__init__()
+
     def checkMatch(self, board):
         matches = []
         for row in range(len(board)):
@@ -20,7 +24,7 @@ class HorizontalMatch(IMatch):
         right = col+1
         left = col-1
         matchLocations = []
-        matchLocations.append((row,col))
+        matchLocations.append((row, col))
 
         # check right
         while right < len(board[row]) and board[row][right] == startingTile:

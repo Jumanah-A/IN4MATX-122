@@ -1,6 +1,10 @@
 from IMatch import IMatch
 
+
 class VerticalMatch(IMatch):
+    def __init__(self):
+        super().__init__()
+
     def checkMatch(self, board):
         matches = []
         for row in range(len(board)):
@@ -12,6 +16,7 @@ class VerticalMatch(IMatch):
                 #     # might be good to change this later for simplicity
                 #     matches.append(self.checkForMatch(board, row, col))
         return matches
+
     def checkForMatch(self, board, row, col):
         startingTile = board[row][col]
         if startingTile in self.no_matching_tiles:
@@ -19,11 +24,11 @@ class VerticalMatch(IMatch):
         up = row-1
         down = row+1
         matchLocations = []
-        matchLocations.append((row,col))
+        matchLocations.append((row, col))
 
         # check above
         while up >= 0 and board[up][col] == startingTile:
-            matchLocations.append((up,col))
+            matchLocations.append((up, col))
             up -= 1
 
         # check below

@@ -1,15 +1,20 @@
-import HorizontalMatch
-import VerticalMatch
+from HorizontalMatch import HorizontalMatch
+from VerticalMatch import VerticalMatch
 from Game import Game
-import Timer
-import CandyCrushTileFactory
+from Timer import Timer
+from CandyCrushTileFactory import CandyCrushTileFactory
 
 
 class CandyCrush(Game):
-    def __init__(self, playerCount):
-        matchingLogic = [HorizontalMatch(), VerticalMatch()]
-        candies = ["red bean", "orange oval", "yellow drop", "green square", "blue ball", "purple star"]
-        super().__init__(playerCount, matchingLogic, CandyCrushTileFactory(candies), moveCount=40)
+    def __init__(self, playerCount, gui):
+        self.gui = gui
+        horizontal = HorizontalMatch()
+        vertical = VerticalMatch()
+        matchingLogic = [horizontal, vertical]
+        candies = ["red bean", "orange oval", "yellow drop",
+                   "green square", "blue ball", "purple star"]
+        super().__init__(playerCount, matchingLogic,
+                         CandyCrushTileFactory(candies), moveCount=40)
 
     def resetGame(self):
         self.playerTurn = 0
@@ -19,6 +24,7 @@ class CandyCrush(Game):
 
     def start(self):
         self.board.createBoard()
+        self.gui.drawBoard(self.board.grid)
         running = True
 
         while (running):
@@ -28,6 +34,8 @@ class CandyCrush(Game):
                 running = False
 
             elif coordinates != (-1, -1):
+                coordinates = self.gui.getTileCoords(
+                    coordinates[0], coordinates[1])
                 if self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
 
