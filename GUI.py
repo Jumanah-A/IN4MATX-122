@@ -98,28 +98,28 @@ class GUI:
         # game.start()
         pass
 
-    def drawBoard(board):
+    def drawBoard(self, board):
         for x in range(BOARDWIDTH):
             for y in range(BOARDHEIGHT):
                 self.pygame.draw.rect(self.DISPLAYSURF, GRIDCOLOR, self.BOARDRECTS[x][y], 1)
                 gemToDraw = board[x][y]
                 self.DISPLAYSURF.blit(GEMIMAGES[gemToDraw], self.BOARDRECTS[x][y])
 
-    def drawCondition(num):
+    def drawCondition(self, num):
         scoreImg = BASICFONT.render(str(num), 1, SCORECOLOR)
         scoreRect = scoreImg.get_rect()
         scoreRect.bottomleft = (10, WINDOWHEIGHT - 6)
         self.DISPLAYSURF.blit(scoreImg, scoreRect)
 
-    def getTileCoords(mouseX, mouseY):
+    def getTileCoords(self, mouseX, mouseY):
     # See if the mouse click was on the board
-    for x in range(BOARDWIDTH):
-        for y in range(BOARDHEIGHT):
-            if self.BOARDRECTS[x][y].collidepoint(mouseX, mouseY):
-                return {'x': x, 'y': y}
-    return None # Click was not on the board.
+        for x in range(BOARDWIDTH):
+            for y in range(BOARDHEIGHT):
+                if self.BOARDRECTS[x][y].collidepoint(mouseX, mouseY):
+                    return {'x': x, 'y': y}
+        return None # Click was not on the board.
 
-    def highlightSpace(mouseX, mouseY):
+    def highlightSpace(self, mouseX, mouseY):
         self.pygame.draw.rect(self.DISPLAYSURF, HIGHLIGHTCOLOR, self.BOARDRECTS[x][y], 4)
 
 if __name__ == '__main__':
