@@ -46,7 +46,7 @@ class Board:
 
     # return bool
     def isValidSwap(self, tile_coords, direction: str) -> bool:
-        (x, y) = tile_coords
+        (y, x) = tile_coords
         if ((direction == "left" and x == 0) or
                 (direction == "right" and x == (self.numCols - 1)) or
                 (direction == "up" and y == 0) or
