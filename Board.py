@@ -90,12 +90,12 @@ class Board:
 
                 if not isinstance(grid[y][x], EmptyTile) and next_empty != -1:
                     grid[next_empty][x] = grid[y][x]
-                    grid[y][x] = self.EmptyTile()
+                    grid[y][x] = EmptyTile()
                     next_empty -= 1
 
     def fillBoard(self):
         grid = self.grid
-        for y in range(self.row):
-            for x in range(self.row):
+        for y in range(self.numRows):
+            for x in range(self.numCols):
                 if isinstance(grid[y][x], EmptyTile):
                     grid[y][x] = self.generateRandomTile()
