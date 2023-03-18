@@ -28,9 +28,9 @@ class Board:
     # Shift tiles down by calling gravity() and populates empty tiles with fillBoard()
     def updateBoard(self, setOfCoords, gui):
         self.removeTiles(setOfCoords)
-        #gui.drawBoard(self.grid)
+        # gui.drawBoard(self.grid)
         self.applyGravity()
-        #gui.drawBoard(self.grid)
+        # gui.drawBoard(self.grid)
         self.fillBoard()
         gui.drawBoard(self.grid)
 
@@ -83,17 +83,17 @@ class Board:
             next_empty = -1  # represents the first empty index
             # start from the bottom of column, then work the way up
             for y in reversed(range(self.numRows)):
-                if isinstance(grid[y][x], EmptyTile()) and next_empty == -1:
+                if isinstance(grid[y][x], EmptyTile) and next_empty == -1:
                     next_empty = y
 
-                if not isinstance(grid[y][x], EmptyTile()) and next_empty != -1:
+                if not isinstance(grid[y][x], EmptyTile) and next_empty != -1:
                     grid[next_empty][x] = grid[y][x]
-                    grid[y][x] = self.EmptyTile()
+                    grid[y][x] = EmptyTile()
                     next_empty -= 1
 
     def fillBoard(self):
         grid = self.grid
-        for y in range(self.row):
-            for x in range(self.row):
-                if isinstance(grid[y][x], EmptyTile()):
+        for y in range(self.numRows):
+            for x in range(self.numCols):
+                if isinstance(grid[y][x], EmptyTile):
                     grid[y][x] = self.generateRandomTile()
