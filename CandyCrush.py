@@ -36,6 +36,7 @@ class CandyCrush(Game):
 
             elif coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(coordinates[0], coordinates[1])
+                swappedCoords = (coordinates[1], coordinates[0])
                 if self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
 
@@ -49,7 +50,7 @@ class CandyCrush(Game):
                         else:
                             self.players[self.playerTurn].increaseScore(
                                 len(tiles))
-                            self.board.updateBoard(tiles)
+                            self.board.updateBoard(tiles, self.gui)
 
                 if self.moveCount != None:
                     self.moveCount -= 1

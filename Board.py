@@ -1,6 +1,7 @@
 # import EmptyTile
 from Tile import Tile
 from TileFactory import TileFactory
+from EmptyTile import EmptyTile
 
 
 class Board:
@@ -25,13 +26,13 @@ class Board:
                      for y in range(self.numRows)]
 
     # Shift tiles down by calling gravity() and populates empty tiles with fillBoard()
-    def updateBoard(self, setOfCoords):
+    def updateBoard(self, setOfCoords, gui):
         self.removeTiles(setOfCoords)
-        GUI.updateDisplay()
+        #gui.drawBoard(self.grid)
         self.applyGravity()
-        GUI.updateDisplay()
+        #gui.drawBoard(self.grid)
         self.fillBoard()
-        GUI.updateDisplay()
+        gui.drawBoard(self.grid)
 
     # return bool
     def isValidSwap(self, tile_coords, direction: str) -> bool:
@@ -70,7 +71,7 @@ class Board:
         # remove a set of tiles
         # consider passing in a set of coordinates, not tiles
         for (x, y) in coords:
-            self.grid[y][x] = self.EmptyTile()
+            self.grid[y][x] = EmptyTile()
 
     # uses tile factory to create a random tile
     def generateRandomTile(self):
@@ -80,14 +81,14 @@ class Board:
     def applyGravity(self):
         grid = self.grid
         # start from col 0, col 1, col 2, etc
-        for x in range(self.col):
+        for x in range(self.numCols):
             next_empty = -1  # represents the first empty index
             # start from the bottom of column, then work the way up
-            for y in reversed(range(self.row)):
-                if isinstance(grid[y][x], self.EmptyTile) and next_empty == -1:
+            for y in reversed(range(self.numRows)):
+                if isinstance(grid[y][x], EmptyTile()) and next_empty == -1:
                     next_empty = y
 
-                if not isinstance(grid[y][x], self.EmptyTile) and next_empty != -1:
+                if not isinstance(grid[y][x], EmptyTile()) and next_empty != -1:
                     grid[next_empty][x] = grid[y][x]
                     grid[y][x] = self.EmptyTile()
                     next_empty -= 1
@@ -96,5 +97,5 @@ class Board:
         grid = self.grid
         for y in range(self.row):
             for x in range(self.row):
-                if isinstance(grid[y][x], self.EmptyTile):
+                if isinstance(grid[y][x], EmptyTile()):
                     grid[y][x] = self.generateRandomTile()
