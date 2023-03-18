@@ -1,4 +1,5 @@
 # import EmptyTile
+from time import sleep
 from Tile import Tile
 from TileFactory import TileFactory
 from EmptyTile import EmptyTile
@@ -22,16 +23,25 @@ class Board:
 
     # Initializes new grid of random tiles
     def createBoard(self):
-        self.grid = [[self.generateRandomTile() for x in range(self.numCols)]
-                     for y in range(self.numRows)]
+        self.grid = [[self.generateRandomTile() for _ in range(self.numCols)]
+                     for _ in range(self.numRows)]
 
     # Shift tiles down by calling gravity() and populates empty tiles with fillBoard()
     def updateBoard(self, setOfCoords, gui):
+        print(setOfCoords)
+        sleep(0.5)
         self.removeTiles(setOfCoords)
-        # gui.drawBoard(self.grid)
+        gui.drawBoard(self.grid)
+
+        sleep(0.5)
         self.applyGravity()
-        # gui.drawBoard(self.grid)
+        gui.drawBoard(self.grid)
+
+        sleep(0.5)
         self.fillBoard()
+        gui.drawBoard(self.grid)
+
+        sleep(0.5)
         gui.drawBoard(self.grid)
 
     # return bool
@@ -68,8 +78,20 @@ class Board:
     def removeTiles(self, coords: set):
         # remove a set of tiles
         # consider passing in a set of coordinates, not tiles
+        print("There are " + str(len(coords)) + " coordinates")
         for (x, y) in coords:
-            self.grid[y][x] = EmptyTile()
+            self.grid[x][y] = EmptyTile()
+            print("Removed tile at " + "(" + str(x) + "," + str(y) + ")")
+
+    def printBoard(self):
+        for y in range(self.numRows):
+            for x in range(self.numCols):
+                tile = self.grid[y][x]
+                if isinstance(tile, EmptyTile):
+                    print("1", end="")
+                else:
+                    print(tile.color, end="")
+            print("")
 
     # uses tile factory to create a random tile
     def generateRandomTile(self):
@@ -83,12 +105,12 @@ class Board:
             next_empty = -1  # represents the first empty index
             # start from the bottom of column, then work the way up
             for y in reversed(range(self.numRows)):
-                if isinstance(grid[y][x], EmptyTile) and next_empty == -1:
+                if isinstance(grid[x][y], EmptyTile) and next_empty == -1:
                     next_empty = y
 
-                if not isinstance(grid[y][x], EmptyTile) and next_empty != -1:
-                    grid[next_empty][x] = grid[y][x]
-                    grid[y][x] = EmptyTile()
+                if not isinstance(grid[x][y], EmptyTile) and next_empty != -1:
+                    grid[x][next_empty] = grid[x][y]
+                    grid[x][y] = EmptyTile()
                     next_empty -= 1
 
     def fillBoard(self):

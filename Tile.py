@@ -4,10 +4,10 @@ class Tile:
         self.color = color
 
     def getName(self):
-        name = self.color + " "+ self.shape
+        name = self.color + " " + self.shape
         return name
 
     def __eq__(self, __o) -> bool:
-        if(self.shape == __o.shape and self.color == __o.color):
+        if (self.shape == __o.shape and self.color == __o.color):
             return True
         return False

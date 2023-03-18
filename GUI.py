@@ -95,6 +95,8 @@ class GUI:
         game.start()
 
     def drawBoard(self, board):
+        self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
+
         for x in range(BOARDWIDTH):
             for y in range(BOARDHEIGHT):
                 self.pygame.draw.rect(
