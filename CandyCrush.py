@@ -36,7 +36,8 @@ class CandyCrush(Game):
 
             elif coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(coordinates[0], coordinates[1])
-                swappedCoords = (coordinates[1], coordinates[0])
+                print(coordinates, direction)
+
                 if self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
 

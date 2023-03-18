@@ -48,18 +48,16 @@ class Board:
     # swaps tiles
     def swapTile(self, tile_coords, direction):
         grid = self.grid
-        print(tile_coords)
         (x_1, y_1) = tile_coords
         (x_2, y_2) = (x_1, y_1)
-        print(x_2, y_2)
         if direction == "left":
-            x_2 -= 1
-        elif direction == "right":
-            x_2 += 1
-        elif direction == "up":
             y_2 -= 1
-        elif direction == "down":
+        elif direction == "right":
             y_2 += 1
+        elif direction == "up":
+            x_2 -= 1
+        elif direction == "down":
+            x_2 += 1
         else:
             print("Direction not valid")
 

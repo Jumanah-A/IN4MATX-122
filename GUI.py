@@ -117,7 +117,7 @@ class GUI:
         for x in range(BOARDWIDTH):
             for y in range(BOARDHEIGHT):
                 if self.BOARDRECTS[x][y].collidepoint(mouseX, mouseY):
-                    return (x, y)
+                    return (y, x)
         return None  # Click was not on the board.
 
     def highlightSpace(self, mouseX, mouseY):
