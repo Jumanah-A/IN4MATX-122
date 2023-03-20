@@ -3,6 +3,12 @@ from pygame.locals import *
 
 
 class Controller(object):
+    def getExitClicked(self):
+        exitGame = False
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                exitGame= True
+        return exitGame
 
     def getInput(self):
         clicked = False
@@ -13,6 +19,10 @@ class Controller(object):
         while (clicked or firstRun):
             firstRun = False
             for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_SPACE:
+                        return (-2,-2), ""
+
                 if event.type == QUIT:
                     return (-1, 0), ""
 
