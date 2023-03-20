@@ -23,6 +23,7 @@ class Timer(object):
             print(self.timeLeft)
             time.sleep(1)
             self.timeLeft -= 1
+            # Here; draw timer using the GUI
         print(self.timeLeft)
         self.stopGame()
 

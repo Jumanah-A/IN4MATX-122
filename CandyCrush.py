@@ -23,7 +23,6 @@ class CandyCrush(Game):
             player.resetScore()
 
     def start(self):
-
         self.board.createBoard()
         if len(self.players) >1:
             self.gui.drawBoard(self.board.grid, self.playerTurn)
@@ -72,15 +71,21 @@ class CandyCrush(Game):
             if self.moveCount <= 0:
                 winner_score = 0
                 winner = ''
-                if self.players[0].getScore() > self.players[1].getScore(): 
-                    winner_score = self.players[0].getScore()
-                    winner = 'Player1'
-                elif self.players[0].getScore() < self.players[1].getScore():
-                    winner_score = self.players[1].getScore()
-                    winner = 'Player2'
+                # if two players
+                if len(self.players) > 1:
+                    if self.players[0].getScore() > self.players[1].getScore():
+                        winner_score = self.players[0].getScore()
+                        winner = 'Player1'
+                    elif self.players[0].getScore() < self.players[1].getScore():
+                        winner_score = self.players[1].getScore()
+                        winner = 'Player2'
+                    else:
+                        winner_score = self.players[0].getScore()
+                        winner = ''
                 else:
+                    # if 1 player
                     winner_score = self.players[0].getScore()
-                    winner = ''
+                    winner = -1
                 self.gui.drawFinalScore(winner_score, winner)
 
             if self.timer != None:

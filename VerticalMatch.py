@@ -2,9 +2,6 @@ from IMatch import IMatch
 
 
 class VerticalMatch(IMatch):
-    def __init__(self):
-        super().__init__()
-
     def checkMatch(self, board):
         matches = []
         for row in range(len(board)):
@@ -45,11 +42,11 @@ class VerticalMatch(IMatch):
 if __name__ == "__main__":
     print("matching tests")
     grid = [[0, 0, 0, 1, 0],
-            [0, 1, 1, 1, 0],
+            [0, 1, 1, 1, 3],
             [0, 1, 0, 1, 3],
-            [2, 2, 2, 0, 3],
+            [2, 2, 2, 1, 3],
             [0, 0, 0, 3, 3]]
-    matches = [VerticalMatch()]
+    matches = [VerticalMatch(4)]
     coordinates = []
     for match in matches:
         for x, y in match.checkMatch(grid):

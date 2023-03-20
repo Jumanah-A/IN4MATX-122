@@ -2,9 +2,6 @@ from IMatch import IMatch
 
 
 class HorizontalMatch(IMatch):
-    def __init__(self):
-        super().__init__()
-
     def checkMatch(self, board):
         matches = []
         for row in range(len(board)):

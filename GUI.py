@@ -98,8 +98,9 @@ class GUI:
 
         score_text = self.BASICFONT.render(f'Player1 Score: {self.currentGame.players[0].score}', True, (255, 255, 255))
         self.DISPLAYSURF.blit(score_text, (10, 10))
-        
-        if turn != -1:
+
+        # maybe change this later
+        if turn != -1 and len(self.currentGame.players) >= 2:
             score_text2 = self.BASICFONT.render(f'Player2 Score: {self.currentGame.players[1].score}', True, (255, 255, 255))
             self.DISPLAYSURF.blit(score_text2, (800, 10))
             turn_text = self.BASICFONT.render(f'Turn: {player_text}', True, (255, 255, 255))
