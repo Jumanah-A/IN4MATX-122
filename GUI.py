@@ -60,6 +60,7 @@ class GUI:
     def __init__(self):
         self.pygame = pygame
         self.pygame.init()
+        self.currentGame = None
         self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         self.BOARDRECTS = []
 
@@ -81,17 +82,37 @@ class GUI:
         menu = Menu(self)
         menu.mainloop(self.DISPLAYSURF)
 
+    def displayScore(self):
+        # initialze score text object
+        font = pygame.font.Font(None, 36)
+        # HARD CODED PLAYER FOR NOW
+        score_text = font.render(f'Score: {self.currentGame.players[0].score}', True, (255, 255, 255))
+        self.DISPLAYSURF.blit(score_text, (10, 10))
+
+    def displayMoveCount(self):
+        # initialze score text object
+        font = pygame.font.Font(None, 36)
+        # HARD CODED PLAYER FOR NOW
+        score_text = font.render(f'Moves: {self.currentGame.moveCount}', True, (255, 255, 255))
+        self.DISPLAYSURF.blit(score_text, (10, 40))
+
+
     def startCandyCrush1P(self):
         self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         game = CandyCrush(1, self)
+        self.currentGame = game
         game.start()
 
     def startCandyCrush2P(self):
         game = CandyCrush(2)
+        self.currentGame = game
         game.start()
 
     def startBejeweled(self):
-        game = Bejeweled(1)
+        # FIX LATER
+        # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
+        game = Bejeweled(self)
+        self.currentGame = game
         game.start()
 
     def drawBoard(self, board):
@@ -106,6 +127,8 @@ class GUI:
                 tileShape = tileToDraw.shape
                 asset = pygame.image.load('assets/' + tileColor + '.png')
                 self.DISPLAYSURF.blit(asset, self.BOARDRECTS[x][y])
+        self.displayScore()
+        self.displayMoveCount()
         pygame.display.update()
 
     def drawCondition(self, num):
