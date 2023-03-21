@@ -27,7 +27,8 @@ class CandyCrush(Game):
 
     def start(self):
         self.board.createBoard()
-        self.timer.startTimer()
+        if self.timer:
+            self.timer.startTimer()
         if len(self.players) > 1:
             self.gui.drawBoard(self.board.grid, self.playerTurn)
         else:
