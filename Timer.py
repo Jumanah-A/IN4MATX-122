@@ -2,15 +2,18 @@ import time
 import threading
 
 class Timer(object):
-    def __init__(self, duration=10):
+    def __init__(self, gui, duration=20):
+        self.gui = gui
         self.duration = duration
         self.timeLeft = duration
         self.timerThread = threading.Thread(target=self._thread_function)
         self._stop_event = threading.Event()
+        self.rect = None
 
     def startTimer(self):
         try:
             self.timeLeft = self.duration
+            #self.gui.displayTimer(self)
             self.timerThread.start()
         except RuntimeError:
             print("ERROR: Timer has already started")
@@ -24,6 +27,7 @@ class Timer(object):
             time.sleep(1)
             self.timeLeft -= 1
             # Here; draw timer using the GUI
+            self.gui.displayTimer(self)
         print(self.timeLeft)
         self.stopGame()
 

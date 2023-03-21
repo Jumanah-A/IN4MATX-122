@@ -46,7 +46,7 @@ class Bejeweled(Game):
                     while (not isEmpty):
                         tiles = set()
                         for matchLogic in self.matchingLogic:
-                            tiles.update(matchLogic.checkMatches(self.board.grid))
+                            tiles.update(matchLogic.checkMatch(self.board.grid))
                         if not tiles:
                             isEmpty = True
                         else:

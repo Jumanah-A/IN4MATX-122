@@ -14,26 +14,33 @@ class CandyCrush(Game):
         candies = ["red bean", "orange oval", "yellow drop",
                    "green square", "blue ball", "purple star"]
         super().__init__(playerCount, matchingLogic,
-                         CandyCrushTileFactory(candies), moveCount=4)
+                         CandyCrushTileFactory(candies), moveCount=4,
+                         timer = Timer(self.gui))
 
     def resetGame(self):
         self.playerTurn = 0
         self.board.createBoard()
         for player in self.players:
             player.resetScore()
+            # delete this later
+            self.timer.resetTimer()
 
     def start(self):
         self.board.createBoard()
-        if len(self.players) >1:
+        self.timer.startTimer()
+        if len(self.players) > 1:
             self.gui.drawBoard(self.board.grid, self.playerTurn)
         else:
             self.gui.drawBoard(self.board.grid)
         running = True
 
+
         while (running):
             coordinates, direction = self.controller.getInput()
+            # stop the game
             if coordinates == (-1, 0) or coordinates == (-2, -2):
                 running = False
+                self.timer.resetTimer()
 
             elif coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(
@@ -45,7 +52,7 @@ class CandyCrush(Game):
                     if self.moveCount != None:
                         self.moveCount -= 1
                         self.gui.drawBoard(self.board.grid, self.playerTurn)
-                    else: 
+                    else:
                         self.gui.drawBoard(self.board.grid)
 
                     isEmpty = False
@@ -61,7 +68,7 @@ class CandyCrush(Game):
                                 len(tiles))
                             self.board.updateBoard(tiles, self.gui, self.playerTurn)
 
-                if len(self.players) >1:
+                if len(self.players) > 1:
                     if self.playerTurn == 1:
                         self.playerTurn = 0
                     else:
@@ -74,20 +81,30 @@ class CandyCrush(Game):
                 # if two players
                 if len(self.players) > 1:
                     if self.players[0].getScore() > self.players[1].getScore():
+                        # Player 1 Wins
                         winner_score = self.players[0].getScore()
                         winner = 'Player1'
                     elif self.players[0].getScore() < self.players[1].getScore():
+                        # Player 2 Wins
                         winner_score = self.players[1].getScore()
                         winner = 'Player2'
                     else:
+                        # Draw
                         winner_score = self.players[0].getScore()
                         winner = ''
                 else:
-                    # if 1 player
+                    # if only 1 player
                     winner_score = self.players[0].getScore()
                     winner = -1
                 self.gui.drawFinalScore(winner_score, winner)
 
+
+
+            # Remove this from Candy Crush and put it into Bejeweled once Candy Crush is finished
             if self.timer != None:
-                if self.timer.getTime() <= 0:
-                    running = False
+                if self.timer.getRemainingTime() <= 0:
+                    #running = False
+                    winner_score = self.players[0].getScore()
+                    winner = -1
+                    self.gui.drawFinalScore(winner_score, winner)
+

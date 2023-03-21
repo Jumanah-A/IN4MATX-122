@@ -106,7 +106,17 @@ class GUI:
             turn_text = self.BASICFONT.render(f'Turn: {player_text}', True, (255, 255, 255))
             self.DISPLAYSURF.blit(turn_text, (400, 40))
 
-
+    def displayTimer(self, timer):
+        timer_text = self.BASICFONT.render(f'Time Remaining: {timer.getRemainingTime()}', True, (255, 255, 255))
+        position = (400, 50)
+        if timer.rect is not None:
+            print("Overwrite rectangle")
+            self.DISPLAYSURF.fill((0, 0, 0), rect=timer.rect)
+        else:
+            print("No overwrite")
+            timer.rect = timer_text.get_rect(topleft=position)
+        self.DISPLAYSURF.blit(timer_text, position)
+        pygame.display.update(timer.rect)
 
     def displayMoveCount(self):
         # initialze score text object
@@ -148,6 +158,8 @@ class GUI:
                 self.DISPLAYSURF.blit(asset, self.BOARDRECTS[x][y])
         self.displayScore(turn)
         self.displayMoveCount()
+        if self.currentGame.timer:
+            self.displayTimer(self.currentGame.timer)
         pygame.display.update()
 
     # def drawCondition(self, num):
