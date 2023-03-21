@@ -1,11 +1,11 @@
-import Tile
+from Tile import Tile
 from TileFactory import TileFactory
 import random
 
 
-class BejeweledTileFactory:
+class BejeweledTileFactory(TileFactory):
     def __init__(self, tiles) -> None:
-        self.tiles = tiles
+        super().__init__(tiles)
 
     def createTile(self, shape, color):
         name = color + " " + shape

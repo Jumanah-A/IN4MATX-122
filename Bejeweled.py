@@ -1,13 +1,16 @@
-import HorizontalMatch
-import VerticalMatch
+from HorizontalMatch import HorizontalMatch
+from VerticalMatch import VerticalMatch
 from Game import Game
-import Timer
-import BejeweledTileFactory
+from Timer import Timer
+from BejeweledTileFactory import BejeweledTileFactory
 
 
 class Bejeweled(Game):
-    def __init__(self):
-        matchingLogic = [HorizontalMatch(), VerticalMatch()]
+    def __init__(self,gui):
+        self.gui = gui
+        horizontal = HorizontalMatch()
+        vertical = VerticalMatch()
+        matchingLogic = [horizontal, vertical]
         timer = Timer(180)
         playerCount=1
         gems = ["red square", "yellow rhombus", "green circle", "blue diamond", "purple triangle", "white ball"]
@@ -21,6 +24,7 @@ class Bejeweled(Game):
 
     def start(self):
         self.board.createBoard()
+        self.gui.drawBoard(self.board.grid)
         running = True
 
         while (running):
@@ -30,20 +34,25 @@ class Bejeweled(Game):
                 running = False
 
             elif coordinates != (-1, -1):
+                coordinates = self.gui.getTileCoords(
+                    coordinates[0], coordinates[1])
+                print(coordinates, direction)
+
                 if self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
+                    self.gui.drawBoard(self.board.grid)
 
                     isEmpty = False
                     while (not isEmpty):
                         tiles = set()
                         for matchLogic in self.matchingLogic:
-                            tiles.update(matchLogic.checkMatches(self.board))
+                            tiles.update(matchLogic.checkMatches(self.board.grid))
                         if not tiles:
                             isEmpty = True
                         else:
                             self.players[self.playerTurn].increaseScore(
                                 len(tiles))
-                            self.board.updateBoard(tiles)
+                            self.board.updateBoard(tiles, self.gui)
 
                 if self.moveCount != None:
                     self.moveCount -= 1
@@ -51,5 +60,5 @@ class Bejeweled(Game):
                         running = False
 
             if self.timer != None:
-                if self.timer.getTime() <= 0:
+                if self.timer.getRemainingTime() <= 0:
                     running = False
