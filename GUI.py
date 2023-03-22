@@ -176,9 +176,11 @@ class GUI:
         self.displayScore(turn)
         if self.currentGame.moveCount is not None:
             self.displayMoveCount()
+
+        pygame.display.update()
+
         if self.currentGame.timer:
             self.displayTimer(self.currentGame.timer)
-        pygame.display.update()
 
     # def drawCondition(self, num):
     #     scoreImg = BASICFONT.render(str(num), 1, SCORECOLOR)
