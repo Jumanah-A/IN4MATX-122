@@ -65,6 +65,7 @@ class GUI:
         self.BOARDRECTS = []
         self.ClickContinueTextSurf= None
         self.BASICFONT = pygame.font.Font('freesansbold.ttf', 24)
+        self.timer_rect = None
 
     def main(self):
         pygame.display.set_caption('INF122 FINAL PROJECT')
@@ -106,7 +107,17 @@ class GUI:
             turn_text = self.BASICFONT.render(f'Turn: {player_text}', True, (255, 255, 255))
             self.DISPLAYSURF.blit(turn_text, (400, 40))
 
-
+    def displayTimer(self, timer):
+        timer_text = self.BASICFONT.render(f'Time Remaining: {timer.getRemainingTime()}', True, (255, 255, 255))
+        position = (400, 50)
+        if self.timer_rect:
+            print("Overwrite rectangle")
+            self.DISPLAYSURF.fill((0, 0, 0), rect=self.timer_rect)
+        else:
+            print("No overwrite")
+            self.timer_rect = timer_text.get_rect(topleft=position)
+        self.DISPLAYSURF.blit(timer_text, position)
+        pygame.display.update(self.timer_rect)
 
     def displayMoveCount(self):
         # initialze score text object
@@ -144,10 +155,18 @@ class GUI:
                 tileToDraw = board[x][y]
                 tileColor = tileToDraw.color
                 tileShape = tileToDraw.shape
-                asset = pygame.image.load('assets/' + tileColor + '.png')
+                if (isinstance(self.currentGame, CandyCrush)):
+                    asset = pygame.image.load('assets/candies/' + tileColor + '.png')
+                elif (isinstance(self.currentGame, Bejeweled)):
+                    asset = pygame.image.load('assets/gems/' + tileColor + '.png')
+                else:
+                    asset = pygame.image.load('assets/' + tileColor + '.png')
+                    
                 self.DISPLAYSURF.blit(asset, self.BOARDRECTS[x][y])
         self.displayScore(turn)
         self.displayMoveCount()
+        if self.currentGame.timer:
+            self.displayTimer(self.currentGame.timer)
         pygame.display.update()
 
     # def drawCondition(self, num):

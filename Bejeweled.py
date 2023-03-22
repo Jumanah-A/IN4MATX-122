@@ -11,10 +11,9 @@ class Bejeweled(Game):
         horizontal = HorizontalMatch()
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
-        timer = Timer(180)
         playerCount=1
         gems = ["red square", "yellow rhombus", "green circle", "blue diamond", "purple triangle", "white ball"]
-        super().__init__(playerCount, matchingLogic, BejeweledTileFactory(gems), timer=timer)
+        super().__init__(playerCount, matchingLogic, BejeweledTileFactory(gems), timer=Timer(self.gui))
 
     def resetGame(self):
         self.playerTurn = 0
@@ -24,14 +23,19 @@ class Bejeweled(Game):
 
     def start(self):
         self.board.createBoard()
-        self.gui.drawBoard(self.board.grid)
+        if self.timer:
+            self.timer.startTimer()
+        if len(self.players) >1:
+            self.gui.drawBoard(self.board.grid, self.playerTurn)
+        else:
+            self.gui.drawBoard(self.board.grid)
         running = True
 
         while (running):
             coordinates, direction = self.controller.getInput()
-
-            if coordinates == (-1, 0):
+            if coordinates == (-1, 0) or coordinates == (-2, -2):
                 running = False
+                self.timer.resetTimer()
 
             elif coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(
@@ -40,25 +44,35 @@ class Bejeweled(Game):
 
                 if self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
-                    self.gui.drawBoard(self.board.grid)
+                    if self.moveCount != None:
+                         self.moveCount -= 1
+                         self.gui.drawBoard(self.board.grid, self.playerTurn)
+                    else: 
+                         self.gui.drawBoard(self.board.grid)
 
                     isEmpty = False
                     while (not isEmpty):
                         tiles = set()
                         for matchLogic in self.matchingLogic:
-                            tiles.update(matchLogic.checkMatches(self.board.grid))
+                            tiles.update(
+                                matchLogic.checkMatch(self.board.grid))
                         if not tiles:
                             isEmpty = True
                         else:
                             self.players[self.playerTurn].increaseScore(
                                 len(tiles))
-                            self.board.updateBoard(tiles, self.gui)
+                            self.board.updateBoard(tiles, self.gui, self.playerTurn)
 
-                if self.moveCount != None:
-                    self.moveCount -= 1
-                    if self.moveCount <= 0:
-                        running = False
+                if len(self.players) > 1:
+                    if self.playerTurn == 1:
+                        self.playerTurn = 0
+                    else:
+                        self.playerTurn = 1
+                self.board.updateBoard(tiles, self.gui, self.playerTurn)
 
             if self.timer != None:
                 if self.timer.getRemainingTime() <= 0:
-                    running = False
+                    winner_score = self.players[0].getScore()
+                    winner = -1
+                    self.gui.drawFinalScore(winner_score, winner)
+
