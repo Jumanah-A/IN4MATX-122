@@ -17,16 +17,16 @@ class Timer(object):
             print("ERROR: Timer has already started")
 
     def _thread_function(self):
-        print("Timer started")
+        #print("Timer started")
         for x in range(self.timeLeft):
             if self._stop_event.is_set():
                 break
-            print(self.timeLeft)
+            #print(self.timeLeft)
             time.sleep(1)
             self.timeLeft -= 1
             # Here; draw timer using the GUI
             self.gui.displayTimer(self)
-        print(self.timeLeft)
+        #print(self.timeLeft)
         self.stopGame()
 
     def stopGame(self):
@@ -40,7 +40,7 @@ class Timer(object):
         self.timerThread = threading.Thread(target=self._thread_function)
         self.timeLeft = self.duration
         self._stop_event.clear()
-        print("RESET")
+        #print("RESET")
 
     def setDuration(self, duration):
         self.duration = duration

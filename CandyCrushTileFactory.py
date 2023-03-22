@@ -4,8 +4,10 @@ import random
 
 
 class CandyCrushTileFactory(TileFactory):
-    def __init__(self, tiles) -> None:
-        super().__init__(tiles)
+    def __init__(self) -> None:
+        candies = ["red bean", "orange oval", "yellow drop",
+                   "green square", "blue ball", "purple star"]
+        super().__init__(candies)
 
     def createTile(self, shape, color):
         name = color + " " + shape

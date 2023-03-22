@@ -12,8 +12,7 @@ class Bejeweled(Game):
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
         playerCount=1
-        gems = ["red square", "yellow rhombus", "green circle", "blue diamond", "purple triangle", "white ball"]
-        super().__init__(playerCount, matchingLogic, BejeweledTileFactory(gems), timer=Timer(self.gui))
+        super().__init__(playerCount, matchingLogic, BejeweledTileFactory(), timer=Timer(self.gui))
 
     def resetGame(self):
         self.playerTurn = 0

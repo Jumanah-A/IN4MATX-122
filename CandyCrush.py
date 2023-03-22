@@ -1,9 +1,7 @@
 from HorizontalMatch import HorizontalMatch
 from VerticalMatch import VerticalMatch
 from Game import Game
-from Timer import Timer
 from CandyCrushTileFactory import CandyCrushTileFactory
-import time
 
 class CandyCrush(Game):
     def __init__(self, playerCount, gui):
@@ -11,10 +9,8 @@ class CandyCrush(Game):
         horizontal = HorizontalMatch()
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
-        candies = ["red bean", "orange oval", "yellow drop",
-                   "green square", "blue ball", "purple star"]
         super().__init__(playerCount, matchingLogic,
-                         CandyCrushTileFactory(candies), moveCount=4)
+                         CandyCrushTileFactory(), moveCount=4)
 
     def resetGame(self):
         self.playerTurn = 0
@@ -24,7 +20,7 @@ class CandyCrush(Game):
 
     def start(self):
         self.board.createBoard()
-        if len(self.players) >1:
+        if len(self.players) > 1:
             self.gui.drawBoard(self.board.grid, self.playerTurn)
         else:
             self.gui.drawBoard(self.board.grid)
@@ -61,12 +57,14 @@ class CandyCrush(Game):
                                 len(tiles))
                             self.board.updateBoard(tiles, self.gui, self.playerTurn)
 
-                if len(self.players) >1:
+                if len(self.players) > 1:
                     if self.playerTurn == 1:
                         self.playerTurn = 0
                     else:
                         self.playerTurn = 1
-                self.board.updateBoard(tiles, self.gui, self.playerTurn)
+
+                # Meant to update player turn
+                self.board.updateBoard(set(), self.gui, self.playerTurn)
 
             if self.moveCount <= 0:
                 winner_score = 0

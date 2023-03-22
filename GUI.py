@@ -7,25 +7,19 @@ from CandyCrush import CandyCrush
 from Bejeweled import Bejeweled
 from Menu import Menu
 
-FPS = 30  # frames per second to update the screen
-WINDOWWIDTH = 1000  # width of the program's window, in pixels
-WINDOWHEIGHT = 600  # height in pixels
-
-BOARDWIDTH = 5  # how many columns in the board
-BOARDHEIGHT = 5  # how many rows in the board
-GEMIMAGESIZE = 64  # width & height of each space in pixels
+#FPS = 30  # frames per second to update the screen
 
 # NUMGEMIMAGES is the number of gem types. You will need .png image
 # files named gem0.png, gem1.png, etc. up to gem(N-1).png.
-NUMGEMIMAGES = 7
-assert NUMGEMIMAGES >= 5  # game needs at least 5 types of gems to work
+# NUMGEMIMAGES = 7
+# assert NUMGEMIMAGES >= 5  # game needs at least 5 types of gems to work
 
 # NUMMATCHSOUNDS is the number of different sounds to choose from when
 # a match is made. The .wav files are named match0.wav, match1.wav, etc.
-NUMMATCHSOUNDS = 6
+# NUMMATCHSOUNDS = 6
 
-MOVERATE = 25  # 1 to 100, larger num means faster animations
-DEDUCTSPEED = 0.8  # reduces score by 1 point every DEDUCTSPEED seconds.
+#MOVERATE = 25  # 1 to 100, larger num means faster animations
+#DEDUCTSPEED = 0.8  # reduces score by 1 point every DEDUCTSPEED seconds.
 
 #             R    G    B
 LIGHTBLUE = (227, 230, 246)
@@ -34,27 +28,16 @@ RED = (255, 100, 100)
 BLACK = (0,   0,   0)
 BROWN = (85,  65,   0)
 PURPLE = (118, 86, 149)
-HIGHLIGHTCOLOR = PURPLE  # color of the selected gem's border
-BGCOLOR = LIGHTBLUE  # background color on the screen
-GRIDCOLOR = BLUE  # color of the game board
-GAMEOVERCOLOR = BLACK  # color of the "Game over" text.
-GAMEOVERBGCOLOR = LIGHTBLUE  # background color of the "Game over" text.
-SCORECOLOR = BLACK  # color of the text for the player's score
-
-# The amount of space to the sides of the board to the edge of the window
-# is used several times, so calculate it once here and store in variables.
-XMARGIN = int((WINDOWWIDTH - GEMIMAGESIZE * BOARDWIDTH) / 2)
-YMARGIN = int((WINDOWHEIGHT - GEMIMAGESIZE * BOARDHEIGHT) / 2)
+#HIGHLIGHTCOLOR = PURPLE  # color of the selected gem's border
 
 # constants for direction values
-UP = 'up'
-DOWN = 'down'
-LEFT = 'left'
-RIGHT = 'right'
+# UP = 'up'
+# DOWN = 'down'
+# LEFT = 'left'
+# RIGHT = 'right'
 
-EMPTY_SPACE = -1  # an arbitrary, nonpositive value
-ROWABOVEBOARD = 'row above board'  # an arbitrary, noninteger value
-
+# EMPTY_SPACE = -1  # an arbitrary, nonpositive value
+# ROWABOVEBOARD = 'row above board'  # an arbitrary, noninteger value
 
 class GUI:
     def __init__(self):
@@ -67,20 +50,40 @@ class GUI:
         self.BASICFONT = pygame.font.Font('freesansbold.ttf', 24)
         self.timer_rect = None
 
+        # Assets/Colors
+        self.WINDOWWIDTH = 1000  # width of the program's window, in pixels
+        self.WINDOWHEIGHT = 600  # height in pixels
+
+        self.BOARDWIDTH = 5  # how many columns in the board
+        self.BOARDHEIGHT = 5  # how many rows in the board
+        self.GEMIMAGESIZE = 64  # width & height of each space in pixels
+
+        self.BGCOLOR = LIGHTBLUE  # background color on the screen
+        self.GRIDCOLOR = BLUE  # color of the game board
+        self.GAMEOVERCOLOR = BLACK  # color of the "Game over" text.
+        self.GAMEOVERBGCOLOR = LIGHTBLUE  # background color of the "Game over" text.
+        self.SCORECOLOR = BLACK  # color of the text for the player's score
+
+
     def main(self):
         pygame.display.set_caption('INF122 FINAL PROJECT')
-        DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+        # DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
         # Load the images
+
+        # The amount of space to the sides of the board to the edge of the window
+        # is used several times, so calculate it once here and store in variables.
+        XMARGIN = int((self.WINDOWWIDTH - self.GEMIMAGESIZE * self.BOARDWIDTH) / 2)
+        YMARGIN = int((self.WINDOWHEIGHT - self.GEMIMAGESIZE * self.BOARDHEIGHT) / 2)
 
         # Create pygame.Rect objects for each board space to
         # do board-coordinate-to-pixel-coordinate conversions.
-        for x in range(BOARDWIDTH):
+        for x in range(self.BOARDWIDTH):
             self.BOARDRECTS.append([])
-            for y in range(BOARDHEIGHT):
-                r = pygame.Rect((XMARGIN + (x * GEMIMAGESIZE),
-                                 YMARGIN + (y * GEMIMAGESIZE),
-                                 GEMIMAGESIZE,
-                                 GEMIMAGESIZE))
+            for y in range(self.BOARDHEIGHT):
+                r = pygame.Rect((XMARGIN + (x * self.GEMIMAGESIZE),
+                                 YMARGIN + (y * self.GEMIMAGESIZE),
+                                 self.GEMIMAGESIZE,
+                                 self.GEMIMAGESIZE))
                 self.BOARDRECTS[x].append(r)
 
         # DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
@@ -107,14 +110,18 @@ class GUI:
             turn_text = self.BASICFONT.render(f'Turn: {player_text}', True, (255, 255, 255))
             self.DISPLAYSURF.blit(turn_text, (400, 40))
 
-    def displayTimer(self, timer):
+    def displayTimer(self, timer, position=None):
+        # cannot have instance variables as default parameters, so this is the work around
+        if position is None:
+            position = (self.WINDOWWIDTH/2, 10)
+
         timer_text = self.BASICFONT.render(f'Time Remaining: {timer.getRemainingTime()}', True, (255, 255, 255))
-        position = (400, 50)
+        position = (position[0]-timer_text.get_rect().width/2, position[1])
         if self.timer_rect:
-            print("Overwrite rectangle")
+            #print("Overwrite rectangle")
             self.DISPLAYSURF.fill((0, 0, 0), rect=self.timer_rect)
         else:
-            print("No overwrite")
+            #print("No overwrite")
             self.timer_rect = timer_text.get_rect(topleft=position)
         self.DISPLAYSURF.blit(timer_text, position)
         pygame.display.update(self.timer_rect)
@@ -126,35 +133,38 @@ class GUI:
         score_text = self.BASICFONT.render(f'Total Moves: {self.currentGame.moveCount}', True, (255, 255, 255))
         self.DISPLAYSURF.blit(score_text, (400, 10))
 
-
     def startCandyCrush1P(self):
         # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         game = CandyCrush(1, self)
-        self.currentGame = game
-        game.start()
+        self.startGame(game)
 
     def startCandyCrush2P(self):
         game = CandyCrush(2, self)
-        self.currentGame = game
-        game.start()
+        self.startGame(game)
+
 
     def startBejeweled(self):
         # FIX LATER
         # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         game = Bejeweled(self)
+        self.startGame(game)
+
+    def startGame(self, game):
         self.currentGame = game
+        self.BOARDHEIGHT = self.currentGame.board.numRows
+        self.BOARDWIDTH = self.currentGame.board.numCols
         game.start()
 
     def drawBoard(self, board, turn=-1):
         self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
 
-        for x in range(BOARDWIDTH):
-            for y in range(BOARDHEIGHT):
+        for x in range(self.BOARDWIDTH):
+            for y in range(self.BOARDHEIGHT):
                 self.pygame.draw.rect(
-                    self.DISPLAYSURF, GRIDCOLOR, self.BOARDRECTS[x][y], 1)
+                    self.DISPLAYSURF, self.GRIDCOLOR, self.BOARDRECTS[x][y], 1)
                 tileToDraw = board[x][y]
                 tileColor = tileToDraw.color
-                tileShape = tileToDraw.shape
+                #tileShape = tileToDraw.shape
                 if (isinstance(self.currentGame, CandyCrush)):
                     asset = pygame.image.load('assets/candies/' + tileColor + '.png')
                 elif (isinstance(self.currentGame, Bejeweled)):
@@ -164,7 +174,8 @@ class GUI:
                     
                 self.DISPLAYSURF.blit(asset, self.BOARDRECTS[x][y])
         self.displayScore(turn)
-        self.displayMoveCount()
+        if self.currentGame.moveCount is not None:
+            self.displayMoveCount()
         if self.currentGame.timer:
             self.displayTimer(self.currentGame.timer)
         pygame.display.update()
@@ -177,8 +188,8 @@ class GUI:
 
     def getTileCoords(self, mouseX, mouseY):
         # See if the mouse click was on the board
-        for x in range(BOARDWIDTH):
-            for y in range(BOARDHEIGHT):
+        for x in range(self.BOARDWIDTH):
+            for y in range(self.BOARDHEIGHT):
                 if self.BOARDRECTS[x][y].collidepoint(mouseX, mouseY):
                     return (y, x)
         return None  # Click was not on the board.
@@ -189,17 +200,41 @@ class GUI:
 
     def drawFinalScore(self, score, player=-1):
         if player==-1:
-            self.clickContinueTextSurf = self.BASICFONT.render('Final Score: %s! Press space to return to menu' % (score), 1, GAMEOVERCOLOR, GAMEOVERBGCOLOR)
+            self.clickContinueTextSurf = self.BASICFONT.render('Final Score: %s! Press space to return to menu' % (score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
         elif player != '':
-            self.clickContinueTextSurf = self.BASICFONT.render('Winner: %s, Score: %s! Press space to return to menu' % (player, score), 1, GAMEOVERCOLOR, GAMEOVERBGCOLOR)
+            self.clickContinueTextSurf = self.BASICFONT.render('Winner: %s, Score: %s! Press space to return to menu' % (player, score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
         else: 
-            self.clickContinueTextSurf = self.BASICFONT.render('Tie! Press space to return to menu', 1, GAMEOVERCOLOR, GAMEOVERBGCOLOR)
+            self.clickContinueTextSurf = self.BASICFONT.render('Tie! Press space to return to menu', 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
         clickContinueTextRect = self.clickContinueTextSurf.get_rect()
-        clickContinueTextRect.center = int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2)
+        clickContinueTextRect.center = int(self.WINDOWWIDTH / 2), int(self.WINDOWHEIGHT / 2)
 
         self.DISPLAYSURF.blit(self.clickContinueTextSurf, clickContinueTextRect)
         self.pygame.display.update()
 
+    # Setters to Make TMGE more dynamic
+    def setWindowWidth(self, new_width):
+        self.WINDOWWIDTH = new_width
+
+    def setWindowHeight(self, new_height):
+        self.WINDOWHEIGHT = new_height
+
+    def setGemImageSize(self, new_size):
+        self.GEMIMAGESIZE = new_size
+
+    def setBGColor(self, new_bg_color):
+        self.BGCOLOR = new_bg_color
+
+    def setGridColor(self, new_grid_color):
+        self.GRIDCOLOR = new_grid_color
+
+    def setGameOverColor(self, new_game_over):
+        self.GAMEOVERCOLOR = new_game_over
+
+    def setGameOverBGColor(self, new_game_over):
+        self.GAMEOVERBGCOLOR = new_game_over
+
+    def setScoreColor(self, new_score_color):
+        self.SCORECOLOR = new_score_color
 
 
 if __name__ == '__main__':

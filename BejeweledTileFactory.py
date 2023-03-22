@@ -4,8 +4,9 @@ import random
 
 
 class BejeweledTileFactory(TileFactory):
-    def __init__(self, tiles) -> None:
-        super().__init__(tiles)
+    def __init__(self) -> None:
+        gems = ["red square", "yellow rhombus", "green circle", "blue diamond", "purple triangle", "white ball"]
+        super().__init__(gems)
 
     def createTile(self, shape, color):
         name = color + " " + shape
