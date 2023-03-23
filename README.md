@@ -6,7 +6,7 @@ Mac OS X: A version of Python is already installed.
 Windows: You will need to install one of the 2.x versions available at python.org.
 
 ## Dependencies
-pygame
+pygame,
 pygame_menu
 
 ## General usage information
