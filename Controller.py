@@ -3,12 +3,12 @@ from pygame.locals import *
 
 
 class Controller(object):
-    def getExitClicked(self):
-        exitGame = False
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN:
-                exitGame= True
-        return exitGame
+    # def getExitClicked(self):
+    #     exitGame = False
+    #     for event in pygame.event.get():
+    #         if event.type == MOUSEBUTTONDOWN:
+    #             exitGame= True
+    #     return exitGame
 
     def getInput(self):
         clicked = False

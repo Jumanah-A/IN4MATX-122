@@ -24,11 +24,12 @@ class Bejeweled(Game):
         self.board.createBoard()
         if self.timer:
             self.timer.startTimer()
-        if len(self.players) >1:
+        if len(self.players) > 1:
             self.gui.drawBoard(self.board.grid, self.playerTurn)
         else:
             self.gui.drawBoard(self.board.grid)
         running = True
+        gameFinished = False
 
         while (running):
             coordinates, direction = self.controller.getInput()
@@ -36,12 +37,12 @@ class Bejeweled(Game):
                 running = False
                 self.timer.resetTimer()
 
-            elif coordinates != (-1, -1):
+            elif not gameFinished and coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(
                     coordinates[0], coordinates[1])
                 print(coordinates, direction)
 
-                if self.board.isValidSwap(coordinates, direction):
+                if coordinates is not None and self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
                     if self.moveCount != None:
                          self.moveCount -= 1
@@ -62,16 +63,17 @@ class Bejeweled(Game):
                                 len(tiles))
                             self.board.updateBoard(tiles, self.gui, self.playerTurn)
 
-                if len(self.players) > 1:
-                    if self.playerTurn == 1:
-                        self.playerTurn = 0
-                    else:
-                        self.playerTurn = 1
-                self.board.updateBoard(tiles, self.gui, self.playerTurn)
+                    if len(self.players) > 1:
+                        if self.playerTurn == 1:
+                            self.playerTurn = 0
+                        else:
+                            self.playerTurn = 1
+                    self.board.updateBoard(tiles, self.gui, self.playerTurn)
 
             if self.timer != None:
                 if self.timer.getRemainingTime() <= 0:
                     winner_score = self.players[0].getScore()
                     winner = -1
                     self.gui.drawFinalScore(winner_score, winner)
+                    gameFinished = True
 

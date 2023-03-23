@@ -22,6 +22,7 @@ class Game(ABC):
         for player in self.players:
             player.resetScore()
 
+    # Fix this
     @abstractmethod
     def start(self):
         self.board.createBoard()
@@ -55,7 +56,7 @@ class Game(ABC):
                         running = False
 
             if self.timer != None:
-                if self.timer.getTime() <= 0:
+                if self.timer.getRemainingTime() <= 0:
                     running = False
 
 

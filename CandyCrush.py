@@ -25,23 +25,23 @@ class CandyCrush(Game):
         else:
             self.gui.drawBoard(self.board.grid)
         running = True
+        gameFinished = False
 
         while (running):
             coordinates, direction = self.controller.getInput()
             if coordinates == (-1, 0) or coordinates == (-2, -2):
                 running = False
 
-            elif coordinates != (-1, -1):
+            elif not gameFinished and coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(
                     coordinates[0], coordinates[1])
                 print(coordinates, direction)
-
-                if self.board.isValidSwap(coordinates, direction):
+                if coordinates is not None and self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
                     if self.moveCount != None:
                         self.moveCount -= 1
                         self.gui.drawBoard(self.board.grid, self.playerTurn)
-                    else: 
+                    else:
                         self.gui.drawBoard(self.board.grid)
 
                     isEmpty = False
@@ -57,14 +57,14 @@ class CandyCrush(Game):
                                 len(tiles))
                             self.board.updateBoard(tiles, self.gui, self.playerTurn)
 
-                if len(self.players) > 1:
-                    if self.playerTurn == 1:
-                        self.playerTurn = 0
-                    else:
-                        self.playerTurn = 1
+                    if len(self.players) > 1:
+                        if self.playerTurn == 1:
+                            self.playerTurn = 0
+                        else:
+                            self.playerTurn = 1
 
-                # Meant to update player turn
-                self.board.updateBoard(set(), self.gui, self.playerTurn)
+                    # Meant to update player turn
+                    self.board.updateBoard(set(), self.gui, self.playerTurn)
 
             if self.moveCount <= 0:
                 winner_score = 0
@@ -84,8 +84,5 @@ class CandyCrush(Game):
                     # if 1 player
                     winner_score = self.players[0].getScore()
                     winner = -1
+                gameFinished = True
                 self.gui.drawFinalScore(winner_score, winner)
-
-            if self.timer != None:
-                if self.timer.getTime() <= 0:
-                    running = False
