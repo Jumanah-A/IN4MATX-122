@@ -41,15 +41,6 @@ PURPLE = (118, 86, 149)
 
 class GUI:
     def __init__(self):
-        self.pygame = pygame
-        self.pygame.init()
-        self.currentGame = None
-        self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
-        self.BOARDRECTS = []
-        self.ClickContinueTextSurf= None
-        self.BASICFONT = pygame.font.Font('freesansbold.ttf', 24)
-        self.timer_rect = None
-
         # Assets/Colors
         self.WINDOWWIDTH = 1000  # width of the program's window, in pixels
         self.WINDOWHEIGHT = 600  # height in pixels
@@ -63,6 +54,16 @@ class GUI:
         self.GAMEOVERCOLOR = BLACK  # color of the "Game over" text.
         self.GAMEOVERBGCOLOR = LIGHTBLUE  # background color of the "Game over" text.
         self.SCORECOLOR = BLACK  # color of the text for the player's score
+
+        # GUI Attributes
+        self.pygame = pygame
+        self.pygame.init()
+        self.currentGame = None
+        self.DISPLAYSURF = self.pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHEIGHT))
+        self.BOARDRECTS = []
+        self.ClickContinueTextSurf= None
+        self.BASICFONT = pygame.font.Font('freesansbold.ttf', 24)
+        self.timer_rect = None
 
 
     def main(self):
@@ -156,7 +157,7 @@ class GUI:
         game.start()
 
     def drawBoard(self, board, turn=-1):
-        self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
+        self.DISPLAYSURF = self.pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHEIGHT))
 
         for x in range(self.BOARDWIDTH):
             for y in range(self.BOARDHEIGHT):
