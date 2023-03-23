@@ -14,12 +14,6 @@ class Bejeweled(Game):
         playerCount=1
         super().__init__(playerCount, matchingLogic, BejeweledTileFactory(), timer=Timer(self.gui))
 
-    def resetGame(self):
-        self.playerTurn = 0
-        self.board.createBoard()
-        for player in self.players:
-            player.resetScore()
-
     def start(self):
         self.board.createBoard()
         if self.timer:
@@ -68,7 +62,9 @@ class Bejeweled(Game):
                             self.playerTurn = 0
                         else:
                             self.playerTurn = 1
-                    self.board.updateBoard(tiles, self.gui, self.playerTurn)
+
+                    # Updates player turn
+                    self.board.updateBoard(set(), self.gui, self.playerTurn)
 
             if self.timer != None:
                 if self.timer.getRemainingTime() <= 0:

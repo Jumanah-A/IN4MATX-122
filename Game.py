@@ -15,7 +15,6 @@ class Game(ABC):
         self.controller = Controller()
         self.moveCount = moveCount
 
-    @abstractmethod
     def resetGame(self):
         self.playerTurn = 0
         self.board.createBoard()
@@ -25,39 +24,40 @@ class Game(ABC):
     # Fix this
     @abstractmethod
     def start(self):
-        self.board.createBoard()
-        running = True
-
-        while (running):
-            coordinates, direction = self.controller.getInput()
-
-            if coordinates == (-1, 0):
-                running = False
-
-            elif coordinates != (-1, -1):
-                if self.board.isValidSwap(coordinates, direction):
-                    self.board.swapTile(coordinates, direction)
-
-                    isEmpty = False
-                    while (not isEmpty):
-                        tiles = set()
-                        for matchLogic in self.matchingLogic:
-                            tiles.update(matchLogic.checkMatches(self.board))
-                        if not tiles:
-                            isEmpty = True
-                        else:
-                            self.players[self.playerTurn].increaseScore(
-                                len(tiles))
-                            self.board.updateBoard(tiles)
-
-                if self.moveCount != None:
-                    self.moveCount -= 1
-                    if self.moveCount <= 0:
-                        running = False
-
-            if self.timer != None:
-                if self.timer.getRemainingTime() <= 0:
-                    running = False
+        pass
+        # self.board.createBoard()
+        # running = True
+        #
+        # while (running):
+        #     coordinates, direction = self.controller.getInput()
+        #
+        #     if coordinates == (-1, 0):
+        #         running = False
+        #
+        #     elif coordinates != (-1, -1):
+        #         if self.board.isValidSwap(coordinates, direction):
+        #             self.board.swapTile(coordinates, direction)
+        #
+        #             isEmpty = False
+        #             while (not isEmpty):
+        #                 tiles = set()
+        #                 for matchLogic in self.matchingLogic:
+        #                     tiles.update(matchLogic.checkMatches(self.board))
+        #                 if not tiles:
+        #                     isEmpty = True
+        #                 else:
+        #                     self.players[self.playerTurn].increaseScore(
+        #                         len(tiles))
+        #                     self.board.updateBoard(tiles)
+        #
+        #         if self.moveCount != None:
+        #             self.moveCount -= 1
+        #             if self.moveCount <= 0:
+        #                 running = False
+        #
+        #     if self.timer != None:
+        #         if self.timer.getRemainingTime() <= 0:
+        #             running = False
 
 
 if __name__ == '__main__':

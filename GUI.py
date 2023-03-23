@@ -7,20 +7,6 @@ from CandyCrush import CandyCrush
 from Bejeweled import Bejeweled
 from Menu import Menu
 
-#FPS = 30  # frames per second to update the screen
-
-# NUMGEMIMAGES is the number of gem types. You will need .png image
-# files named gem0.png, gem1.png, etc. up to gem(N-1).png.
-# NUMGEMIMAGES = 7
-# assert NUMGEMIMAGES >= 5  # game needs at least 5 types of gems to work
-
-# NUMMATCHSOUNDS is the number of different sounds to choose from when
-# a match is made. The .wav files are named match0.wav, match1.wav, etc.
-# NUMMATCHSOUNDS = 6
-
-#MOVERATE = 25  # 1 to 100, larger num means faster animations
-#DEDUCTSPEED = 0.8  # reduces score by 1 point every DEDUCTSPEED seconds.
-
 #             R    G    B
 LIGHTBLUE = (227, 230, 246)
 BLUE = (38, 150, 190)
@@ -28,6 +14,7 @@ RED = (255, 100, 100)
 BLACK = (0,   0,   0)
 BROWN = (85,  65,   0)
 PURPLE = (118, 86, 149)
+WHITE = (255, 255, 255)
 #HIGHLIGHTCOLOR = PURPLE  # color of the selected gem's border
 
 # constants for direction values
@@ -36,24 +23,22 @@ PURPLE = (118, 86, 149)
 # LEFT = 'left'
 # RIGHT = 'right'
 
-# EMPTY_SPACE = -1  # an arbitrary, nonpositive value
-# ROWABOVEBOARD = 'row above board'  # an arbitrary, noninteger value
-
 class GUI:
     def __init__(self):
         # Assets/Colors
         self.WINDOWWIDTH = 1000  # width of the program's window, in pixels
         self.WINDOWHEIGHT = 600  # height in pixels
 
+        # board width and board height will change upon current game being set
         self.BOARDWIDTH = 5  # how many columns in the board
         self.BOARDHEIGHT = 5  # how many rows in the board
         self.GEMIMAGESIZE = 64  # width & height of each space in pixels
 
-        self.BGCOLOR = LIGHTBLUE  # background color on the screen
+        self.BGCOLOR = BLACK  # background color on the screen
         self.GRIDCOLOR = BLUE  # color of the game board
         self.GAMEOVERCOLOR = BLACK  # color of the "Game over" text.
         self.GAMEOVERBGCOLOR = LIGHTBLUE  # background color of the "Game over" text.
-        self.SCORECOLOR = BLACK  # color of the text for the player's score
+        self.SCORECOLOR = WHITE  # color of the text for the player's score
 
         # GUI Attributes
         self.pygame = pygame
@@ -101,14 +86,14 @@ class GUI:
         elif turn == 1:
             player_text = "Player2"
 
-        score_text = self.BASICFONT.render(f'Player1 Score: {self.currentGame.players[0].score}', True, (255, 255, 255))
+        score_text = self.BASICFONT.render(f'Player1 Score: {self.currentGame.players[0].score}', True, self.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (10, 10))
 
         # maybe change this later
         if turn != -1 and len(self.currentGame.players) >= 2:
-            score_text2 = self.BASICFONT.render(f'Player2 Score: {self.currentGame.players[1].score}', True, (255, 255, 255))
+            score_text2 = self.BASICFONT.render(f'Player2 Score: {self.currentGame.players[1].score}', True, self.SCORECOLOR)
             self.DISPLAYSURF.blit(score_text2, (800, 10))
-            turn_text = self.BASICFONT.render(f'Turn: {player_text}', True, (255, 255, 255))
+            turn_text = self.BASICFONT.render(f'Turn: {player_text}', True, self.SCORECOLOR)
             self.DISPLAYSURF.blit(turn_text, (400, 40))
 
     def displayTimer(self, timer, position=None):
@@ -116,11 +101,11 @@ class GUI:
         if position is None:
             position = (self.WINDOWWIDTH/2, 10)
 
-        timer_text = self.BASICFONT.render(f'Time Remaining: {timer.getRemainingTime()}', True, (255, 255, 255))
+        timer_text = self.BASICFONT.render(f'Time Remaining: {timer.getRemainingTime()}', True, self.SCORECOLOR)
         position = (position[0]-timer_text.get_rect().width/2, position[1])
         if self.timer_rect:
             #print("Overwrite rectangle")
-            self.DISPLAYSURF.fill((0, 0, 0), rect=self.timer_rect)
+            self.DISPLAYSURF.fill(self.BGCOLOR, rect=self.timer_rect)
         else:
             #print("No overwrite")
             self.timer_rect = timer_text.get_rect(topleft=position)
@@ -131,26 +116,27 @@ class GUI:
         # initialze score text object
         # font = pygame.font.Font(None, 36)
         # HARD CODED PLAYER FOR NOW
-        score_text = self.BASICFONT.render(f'Total Moves: {self.currentGame.moveCount}', True, (255, 255, 255))
+        score_text = self.BASICFONT.render(f'Total Moves: {self.currentGame.moveCount}', True, self.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (400, 10))
 
     def startCandyCrush1P(self):
         # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         game = CandyCrush(1, self)
-        self.startGame(game)
+        self._startGame(game)
 
     def startCandyCrush2P(self):
         game = CandyCrush(2, self)
-        self.startGame(game)
+        self._startGame(game)
 
 
     def startBejeweled(self):
         # FIX LATER
         # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         game = Bejeweled(self)
-        self.startGame(game)
+        self._startGame(game)
 
-    def startGame(self, game):
+    # private helper function
+    def _startGame(self, game):
         self.currentGame = game
         self.BOARDHEIGHT = self.currentGame.board.numRows
         self.BOARDWIDTH = self.currentGame.board.numCols
@@ -158,7 +144,7 @@ class GUI:
 
     def drawBoard(self, board, turn=-1):
         self.DISPLAYSURF = self.pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHEIGHT))
-
+        self.DISPLAYSURF.fill(self.BGCOLOR)
         for x in range(self.BOARDWIDTH):
             for y in range(self.BOARDHEIGHT):
                 self.pygame.draw.rect(
@@ -196,10 +182,6 @@ class GUI:
                 if self.BOARDRECTS[x][y].collidepoint(mouseX, mouseY):
                     return (y, x)
         return None  # Click was not on the board.
-
-    # def highlightSpace(self, mouseX, mouseY):
-    #     self.pygame.draw.rect(
-    #         self.DISPLAYSURF, HIGHLIGHTCOLOR, self.BOARDRECTS[x][y], 4)
 
     def drawFinalScore(self, score, player=-1):
         if player==-1:

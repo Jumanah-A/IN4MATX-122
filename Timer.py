@@ -2,7 +2,7 @@ import time
 import threading
 
 class Timer(object):
-    def __init__(self, gui, duration=10):
+    def __init__(self, gui, duration=30):
         self.gui = gui
         self.duration = duration
         self.timeLeft = duration

@@ -12,12 +12,6 @@ class CandyCrush(Game):
         super().__init__(playerCount, matchingLogic,
                          CandyCrushTileFactory(), moveCount=4)
 
-    def resetGame(self):
-        self.playerTurn = 0
-        self.board.createBoard()
-        for player in self.players:
-            player.resetScore()
-
     def start(self):
         self.board.createBoard()
         if len(self.players) > 1:
@@ -36,6 +30,7 @@ class CandyCrush(Game):
                 coordinates = self.gui.getTileCoords(
                     coordinates[0], coordinates[1])
                 print(coordinates, direction)
+
                 if coordinates is not None and self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
                     if self.moveCount != None:
