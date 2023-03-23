@@ -2,11 +2,11 @@
 Group 8's repository for the final project for IN4MATX122 
 
 ## Installation
-Mac OS X: A version of Python is already installed.
+Mac OS X: A version of Python is already installed.\
 Windows: You will need to install one of the 2.x versions available at python.org.
 
 ## Dependencies
-pygame,
+pygame\
 pygame_menu
 
 ## General usage information
