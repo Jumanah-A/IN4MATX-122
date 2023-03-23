@@ -15,13 +15,14 @@ BLACK = (0,   0,   0)
 BROWN = (85,  65,   0)
 PURPLE = (118, 86, 149)
 WHITE = (255, 255, 255)
-#HIGHLIGHTCOLOR = PURPLE  # color of the selected gem's border
+# HIGHLIGHTCOLOR = PURPLE  # color of the selected gem's border
 
 # constants for direction values
 # UP = 'up'
 # DOWN = 'down'
 # LEFT = 'left'
 # RIGHT = 'right'
+
 
 class GUI:
     def __init__(self):
@@ -37,19 +38,20 @@ class GUI:
         self.BGCOLOR = BLACK  # background color on the screen
         self.GRIDCOLOR = BLUE  # color of the game board
         self.GAMEOVERCOLOR = BLACK  # color of the "Game over" text.
-        self.GAMEOVERBGCOLOR = LIGHTBLUE  # background color of the "Game over" text.
+        # background color of the "Game over" text.
+        self.GAMEOVERBGCOLOR = LIGHTBLUE
         self.SCORECOLOR = WHITE  # color of the text for the player's score
 
         # GUI Attributes
         self.pygame = pygame
         self.pygame.init()
         self.currentGame = None
-        self.DISPLAYSURF = self.pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHEIGHT))
+        self.DISPLAYSURF = self.pygame.display.set_mode(
+            (self.WINDOWWIDTH, self.WINDOWHEIGHT))
         self.BOARDRECTS = []
-        self.ClickContinueTextSurf= None
+        self.ClickContinueTextSurf = None
         self.BASICFONT = pygame.font.Font('freesansbold.ttf', 24)
         self.timer_rect = None
-
 
     def main(self):
         pygame.display.set_caption('INF122 FINAL PROJECT')
@@ -58,8 +60,10 @@ class GUI:
 
         # The amount of space to the sides of the board to the edge of the window
         # is used several times, so calculate it once here and store in variables.
-        XMARGIN = int((self.WINDOWWIDTH - self.GEMIMAGESIZE * self.BOARDWIDTH) / 2)
-        YMARGIN = int((self.WINDOWHEIGHT - self.GEMIMAGESIZE * self.BOARDHEIGHT) / 2)
+        XMARGIN = int(
+            (self.WINDOWWIDTH - self.GEMIMAGESIZE * self.BOARDWIDTH) / 2)
+        YMARGIN = int(
+            (self.WINDOWHEIGHT - self.GEMIMAGESIZE * self.BOARDHEIGHT) / 2)
 
         # Create pygame.Rect objects for each board space to
         # do board-coordinate-to-pixel-coordinate conversions.
@@ -81,19 +85,22 @@ class GUI:
         # font = pygame.font.Font(None, 36)
         # HARD CODED PLAYER FOR NOW
         player_text = ""
-        if turn==0:
-            player_text = "Player1"
+        if turn == 0:
+            player_text = "Player 1"
         elif turn == 1:
-            player_text = "Player2"
+            player_text = "Player 2"
 
-        score_text = self.BASICFONT.render(f'Player1 Score: {self.currentGame.players[0].score}', True, self.SCORECOLOR)
+        score_text = self.BASICFONT.render(
+            f'Player 1 Score: {self.currentGame.players[0].score}', True, self.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (10, 10))
 
         # maybe change this later
         if turn != -1 and len(self.currentGame.players) >= 2:
-            score_text2 = self.BASICFONT.render(f'Player2 Score: {self.currentGame.players[1].score}', True, self.SCORECOLOR)
+            score_text2 = self.BASICFONT.render(
+                f'Player 2 Score: {self.currentGame.players[1].score}', True, self.SCORECOLOR)
             self.DISPLAYSURF.blit(score_text2, (800, 10))
-            turn_text = self.BASICFONT.render(f'Turn: {player_text}', True, self.SCORECOLOR)
+            turn_text = self.BASICFONT.render(
+                f'Turn: {player_text}', True, self.SCORECOLOR)
             self.DISPLAYSURF.blit(turn_text, (400, 40))
 
     def displayTimer(self, timer, position=None):
@@ -101,13 +108,14 @@ class GUI:
         if position is None:
             position = (self.WINDOWWIDTH/2, 10)
 
-        timer_text = self.BASICFONT.render(f'Time Remaining: {timer.getRemainingTime()}', True, self.SCORECOLOR)
+        timer_text = self.BASICFONT.render(
+            f'Time Remaining: {timer.getRemainingTime()}', True, self.SCORECOLOR)
         position = (position[0]-timer_text.get_rect().width/2, position[1])
         if self.timer_rect:
-            #print("Overwrite rectangle")
+            # print("Overwrite rectangle")
             self.DISPLAYSURF.fill(self.BGCOLOR, rect=self.timer_rect)
         else:
-            #print("No overwrite")
+            # print("No overwrite")
             self.timer_rect = timer_text.get_rect(topleft=position)
         self.DISPLAYSURF.blit(timer_text, position)
         pygame.display.update(self.timer_rect)
@@ -116,7 +124,8 @@ class GUI:
         # initialze score text object
         # font = pygame.font.Font(None, 36)
         # HARD CODED PLAYER FOR NOW
-        score_text = self.BASICFONT.render(f'Total Moves: {self.currentGame.moveCount}', True, self.SCORECOLOR)
+        score_text = self.BASICFONT.render(
+            f'Total Moves: {self.currentGame.moveCount}', True, self.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (400, 10))
 
     def startCandyCrush1P(self):
@@ -127,7 +136,6 @@ class GUI:
     def startCandyCrush2P(self):
         game = CandyCrush(2, self)
         self._startGame(game)
-
 
     def startBejeweled(self):
         # FIX LATER
@@ -143,7 +151,8 @@ class GUI:
         game.start()
 
     def drawBoard(self, board, turn=-1):
-        self.DISPLAYSURF = self.pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHEIGHT))
+        self.DISPLAYSURF = self.pygame.display.set_mode(
+            (self.WINDOWWIDTH, self.WINDOWHEIGHT))
         self.DISPLAYSURF.fill(self.BGCOLOR)
         for x in range(self.BOARDWIDTH):
             for y in range(self.BOARDHEIGHT):
@@ -151,14 +160,16 @@ class GUI:
                     self.DISPLAYSURF, self.GRIDCOLOR, self.BOARDRECTS[x][y], 1)
                 tileToDraw = board[x][y]
                 tileColor = tileToDraw.color
-                #tileShape = tileToDraw.shape
+                # tileShape = tileToDraw.shape
                 if (isinstance(self.currentGame, CandyCrush)):
-                    asset = pygame.image.load('assets/candies/' + tileColor + '.png')
+                    asset = pygame.image.load(
+                        'assets/candies/' + tileColor + '.png')
                 elif (isinstance(self.currentGame, Bejeweled)):
-                    asset = pygame.image.load('assets/gems/' + tileColor + '.png')
+                    asset = pygame.image.load(
+                        'assets/gems/' + tileColor + '.png')
                 else:
                     asset = pygame.image.load('assets/' + tileColor + '.png')
-                    
+
                 self.DISPLAYSURF.blit(asset, self.BOARDRECTS[x][y])
         self.displayScore(turn)
         if self.currentGame.moveCount is not None:
@@ -184,16 +195,21 @@ class GUI:
         return None  # Click was not on the board.
 
     def drawFinalScore(self, score, player=-1):
-        if player==-1:
-            self.clickContinueTextSurf = self.BASICFONT.render('Final Score: %s! Press space to return to menu' % (score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
+        if player == -1:
+            self.clickContinueTextSurf = self.BASICFONT.render(
+                'Final Score: %s! Press space to return to menu' % (score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
         elif player != '':
-            self.clickContinueTextSurf = self.BASICFONT.render('Winner: %s, Score: %s! Press space to return to menu' % (player, score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
-        else: 
-            self.clickContinueTextSurf = self.BASICFONT.render('Tie! Press space to return to menu', 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
+            self.clickContinueTextSurf = self.BASICFONT.render('Winner: %s, Score: %s! Press space to return to menu' % (
+                player, score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
+        else:
+            self.clickContinueTextSurf = self.BASICFONT.render(
+                'Tie! Press space to return to menu', 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
         clickContinueTextRect = self.clickContinueTextSurf.get_rect()
-        clickContinueTextRect.center = int(self.WINDOWWIDTH / 2), int(self.WINDOWHEIGHT / 2)
+        clickContinueTextRect.center = int(
+            self.WINDOWWIDTH / 2), int(self.WINDOWHEIGHT / 2)
 
-        self.DISPLAYSURF.blit(self.clickContinueTextSurf, clickContinueTextRect)
+        self.DISPLAYSURF.blit(self.clickContinueTextSurf,
+                              clickContinueTextRect)
         self.pygame.display.update()
 
     # Setters to Make TMGE more dynamic

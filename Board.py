@@ -28,7 +28,6 @@ class Board:
 
     # Shift tiles down by calling gravity() and populates empty tiles with fillBoard()
     def updateBoard(self, setOfCoords, gui, playerTurn=-1):
-        print(setOfCoords)
         sleep(0.5)
         self.removeTiles(setOfCoords)
         gui.drawBoard(self.grid, playerTurn)
@@ -58,40 +57,39 @@ class Board:
     # swaps tiles
     def swapTile(self, tile_coords, direction):
         grid = self.grid
-        (x_1, y_1) = tile_coords
-        (x_2, y_2) = (x_1, y_1)
+        (y_1, x_1) = tile_coords
+        (y_2, x_2) = (y_1, x_1)
         if direction == "left":
-            y_2 -= 1
-        elif direction == "right":
-            y_2 += 1
-        elif direction == "up":
             x_2 -= 1
-        elif direction == "down":
+        elif direction == "right":
             x_2 += 1
+        elif direction == "up":
+            y_2 -= 1
+        elif direction == "down":
+            y_2 += 1
         else:
             print("Direction not valid")
 
-        tile = grid[y_1][x_1]
-        grid[y_1][x_1] = grid[y_2][x_2]
-        grid[y_2][x_2] = tile
+        tile = grid[x_1][y_1]
+        grid[x_1][y_1] = grid[x_2][y_2]
+        grid[x_2][y_2] = tile
 
     def removeTiles(self, coords: set):
         # remove a set of tiles
         # consider passing in a set of coordinates, not tiles
-        print("There are " + str(len(coords)) + " coordinates")
         for (x, y) in coords:
             self.grid[x][y] = EmptyTile()
-            print("Removed tile at " + "(" + str(x) + "," + str(y) + ")")
 
-    def printBoard(self):
-        for y in range(self.numRows):
-            for x in range(self.numCols):
-                tile = self.grid[y][x]
-                if isinstance(tile, EmptyTile):
-                    print("1", end="")
-                else:
-                    print(tile.color, end="")
-            print("")
+    # debugging function
+    # def printBoard(self):
+    #     for y in range(self.numRows):
+    #         for x in range(self.numCols):
+    #             tile = self.grid[y][x]
+    #             if isinstance(tile, EmptyTile):
+    #                 print("1", end="")
+    #             else:
+    #                 print(tile.color, end="")
+    #         print("")
 
     # uses tile factory to create a random tile
     def generateRandomTile(self):
@@ -117,5 +115,5 @@ class Board:
         grid = self.grid
         for y in range(self.numRows):
             for x in range(self.numCols):
-                if isinstance(grid[y][x], EmptyTile):
-                    grid[y][x] = self.generateRandomTile()
+                if isinstance(grid[x][y], EmptyTile):
+                    grid[x][y] = self.generateRandomTile()

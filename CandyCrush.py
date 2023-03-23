@@ -3,6 +3,7 @@ from VerticalMatch import VerticalMatch
 from Game import Game
 from CandyCrushTileFactory import CandyCrushTileFactory
 
+
 class CandyCrush(Game):
     def __init__(self, playerCount, gui):
         self.gui = gui
@@ -10,7 +11,7 @@ class CandyCrush(Game):
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
         super().__init__(playerCount, matchingLogic,
-                         CandyCrushTileFactory(), moveCount=4)
+                         CandyCrushTileFactory(), moveCount=10)
 
     def start(self):
         self.board.createBoard()
@@ -29,7 +30,6 @@ class CandyCrush(Game):
             elif not gameFinished and coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(
                     coordinates[0], coordinates[1])
-                print(coordinates, direction)
 
                 if coordinates is not None and self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
@@ -50,7 +50,8 @@ class CandyCrush(Game):
                         else:
                             self.players[self.playerTurn].increaseScore(
                                 len(tiles))
-                            self.board.updateBoard(tiles, self.gui, self.playerTurn)
+                            self.board.updateBoard(
+                                tiles, self.gui, self.playerTurn)
 
                     if len(self.players) > 1:
                         if self.playerTurn == 1:
@@ -68,10 +69,10 @@ class CandyCrush(Game):
                 if len(self.players) > 1:
                     if self.players[0].getScore() > self.players[1].getScore():
                         winner_score = self.players[0].getScore()
-                        winner = 'Player1'
+                        winner = 'Player 1'
                     elif self.players[0].getScore() < self.players[1].getScore():
                         winner_score = self.players[1].getScore()
-                        winner = 'Player2'
+                        winner = 'Player 2'
                     else:
                         winner_score = self.players[0].getScore()
                         winner = ''
