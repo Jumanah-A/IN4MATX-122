@@ -1,6 +1,6 @@
-from Tile import Tile
 from TileFactory import TileFactory
 import random
+from CandyCrushTile import CandyCrushTile
 
 
 class CandyCrushTileFactory(TileFactory):
@@ -12,7 +12,7 @@ class CandyCrushTileFactory(TileFactory):
     def createTile(self, shape, color):
         name = color + " " + shape
         if (name in self.tiles):
-            return Tile(shape, color)
+            return CandyCrushTile(shape, color)
         else:
             print("Error: Tile not in Tile Factory")
 
@@ -20,4 +20,4 @@ class CandyCrushTileFactory(TileFactory):
         tileName = random.choice(self.tiles)
         color = tileName.split()[0]
         shape = tileName.split()[1]
-        return Tile(shape, color)
+        return CandyCrushTile(shape, color)

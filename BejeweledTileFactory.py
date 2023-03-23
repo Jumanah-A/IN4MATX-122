@@ -1,4 +1,4 @@
-from Tile import Tile
+from BejeweledTile import BejeweledTile
 from TileFactory import TileFactory
 import random
 
@@ -11,7 +11,7 @@ class BejeweledTileFactory(TileFactory):
     def createTile(self, shape, color):
         name = color + " " + shape
         if (name in self.tiles):
-            return Tile(shape, color)
+            return BejeweledTile(shape, color)
         else:
             print("Error: Tile not in Tile Factory")
 
@@ -19,4 +19,4 @@ class BejeweledTileFactory(TileFactory):
         tileName = random.choice(self.tiles)
         color = tileName.split()[0]
         shape = tileName.split()[1]
-        return Tile(shape, color)
+        return BejeweledTile(shape, color)

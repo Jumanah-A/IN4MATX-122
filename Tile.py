@@ -8,6 +8,6 @@ class Tile:
         return name
 
     def __eq__(self, __o) -> bool:
-        if (self.shape == __o.shape and self.color == __o.color):
+        if (self.shape == __o.shape and self.color == __o.color and isinstance(__o, type(self))):
             return True
         return False
