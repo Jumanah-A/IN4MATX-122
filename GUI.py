@@ -10,6 +10,7 @@ from GUI_Design import GUI_Design
 # LEFT = 'left'
 # RIGHT = 'right'
 
+
 class GUI:
     def __init__(self):
         # board width and board height will change upon current game being set
@@ -103,33 +104,11 @@ class GUI:
             f'Total Moves: {self.currentGame.moveCount}', True, self.design.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (400, 10))
 
-    def startCandyCrush1P(self):
-        # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
-        game = CandyCrush(1, self)
-        self._startGame(game)
-
-    def startCandyCrush2P(self):
-        game = CandyCrush(2, self)
-        self._startGame(game)
-
-    def startBejeweled1P(self):
-        # FIX LATER
-        # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
-        game = Bejeweled(1, self)
-        self._startGame(game)
-
-    def startBejeweled2P(self):
-        # FIX LATER
-        # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
-        game = Bejeweled(2, self)
-        self._startGame(game)
-
     # private helper function
-    def _startGame(self, game):
+    def setGameAttributes(self, game):
         self.currentGame = game
         self.BOARDHEIGHT = self.currentGame.board.numRows
         self.BOARDWIDTH = self.currentGame.board.numCols
-        game.start()
 
     def drawBoard(self, board, turn=-1):
         self.DISPLAYSURF = self.pygame.display.set_mode(
@@ -172,7 +151,8 @@ class GUI:
     def drawFinalScore(self, score, player=-1):
         if player == -1:
             self.clickContinueTextSurf = self.BASICFONT.render(
-                'Final Score: %s! Press space to return to menu' % (score), 1, self.design.GAMEOVERCOLOR,
+                'Final Score: %s! Press space to return to menu' % (
+                    score), 1, self.design.GAMEOVERCOLOR,
                 self.design.GAMEOVERBGCOLOR)
         elif player != '':
             self.clickContinueTextSurf = self.BASICFONT.render('Winner: %s, Score: %s! Press space to return to menu' % (
