@@ -1,21 +1,8 @@
-import random
-import time
-import sys
-import copy
 import pygame
 from CandyCrush import CandyCrush
 from Bejeweled import Bejeweled
 from Menu import Menu
-
-#             R    G    B
-LIGHTBLUE = (227, 230, 246)
-BLUE = (38, 150, 190)
-RED = (255, 100, 100)
-BLACK = (0,   0,   0)
-BROWN = (85,  65,   0)
-PURPLE = (118, 86, 149)
-WHITE = (255, 255, 255)
-# HIGHLIGHTCOLOR = PURPLE  # color of the selected gem's border
+from GUI_Design import GUI_Design
 
 # constants for direction values
 # UP = 'up'
@@ -23,31 +10,19 @@ WHITE = (255, 255, 255)
 # LEFT = 'left'
 # RIGHT = 'right'
 
-
 class GUI:
     def __init__(self):
-        # Assets/Colors
-        self.WINDOWWIDTH = 1000  # width of the program's window, in pixels
-        self.WINDOWHEIGHT = 600  # height in pixels
-
         # board width and board height will change upon current game being set
         self.BOARDWIDTH = 5  # how many columns in the board
         self.BOARDHEIGHT = 5  # how many rows in the board
-        self.GEMIMAGESIZE = 64  # width & height of each space in pixels
-
-        self.BGCOLOR = BLACK  # background color on the screen
-        self.GRIDCOLOR = BLUE  # color of the game board
-        self.GAMEOVERCOLOR = BLACK  # color of the "Game over" text.
-        # background color of the "Game over" text.
-        self.GAMEOVERBGCOLOR = LIGHTBLUE
-        self.SCORECOLOR = WHITE  # color of the text for the player's score
+        self.design = GUI_Design()
 
         # GUI Attributes
         self.pygame = pygame
         self.pygame.init()
         self.currentGame = None
         self.DISPLAYSURF = self.pygame.display.set_mode(
-            (self.WINDOWWIDTH, self.WINDOWHEIGHT))
+            (self.design.WINDOWWIDTH, self.design.WINDOWHEIGHT))
         self.BOARDRECTS = []
         self.clickContinueTextSurf = None
         self.BASICFONT = pygame.font.Font('freesansbold.ttf', 24)
@@ -61,19 +36,19 @@ class GUI:
         # The amount of space to the sides of the board to the edge of the window
         # is used several times, so calculate it once here and store in variables.
         XMARGIN = int(
-            (self.WINDOWWIDTH - self.GEMIMAGESIZE * self.BOARDWIDTH) / 2)
+            (self.design.WINDOWWIDTH - self.design.GEMIMAGESIZE * self.BOARDWIDTH) / 2)
         YMARGIN = int(
-            (self.WINDOWHEIGHT - self.GEMIMAGESIZE * self.BOARDHEIGHT) / 2)
+            (self.design.WINDOWHEIGHT - self.design.GEMIMAGESIZE * self.BOARDHEIGHT) / 2)
 
         # Create pygame.Rect objects for each board space to
         # do board-coordinate-to-pixel-coordinate conversions.
         for x in range(self.BOARDWIDTH):
             self.BOARDRECTS.append([])
             for y in range(self.BOARDHEIGHT):
-                r = pygame.Rect((XMARGIN + (x * self.GEMIMAGESIZE),
-                                 YMARGIN + (y * self.GEMIMAGESIZE),
-                                 self.GEMIMAGESIZE,
-                                 self.GEMIMAGESIZE))
+                r = pygame.Rect((XMARGIN + (x * self.design.GEMIMAGESIZE),
+                                 YMARGIN + (y * self.design.GEMIMAGESIZE),
+                                 self.design.GEMIMAGESIZE,
+                                 self.design.GEMIMAGESIZE))
                 self.BOARDRECTS[x].append(r)
 
         # DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
@@ -91,29 +66,29 @@ class GUI:
             player_text = "Player 2"
 
         score_text = self.BASICFONT.render(
-            f'Player 1 Score: {self.currentGame.players[0].score}', True, self.SCORECOLOR)
+            f'Player 1 Score: {self.currentGame.players[0].score}', True, self.design.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (10, 10))
 
         # maybe change this later
         if turn != -1 and len(self.currentGame.players) >= 2:
             score_text2 = self.BASICFONT.render(
-                f'Player 2 Score: {self.currentGame.players[1].score}', True, self.SCORECOLOR)
-            self.DISPLAYSURF.blit(score_text2, (800, 10))
+                f'Player 2 Score: {self.currentGame.players[1].score}', True, self.design.SCORECOLOR)
+            self.DISPLAYSURF.blit(score_text2, (780, 10))
             turn_text = self.BASICFONT.render(
-                f'Turn: {player_text}', True, self.SCORECOLOR)
+                f'Turn: {player_text}', True, self.design.SCORECOLOR)
             self.DISPLAYSURF.blit(turn_text, (400, 40))
 
     def displayTimer(self, timer, position=None):
         # cannot have instance variables as default parameters, so this is the work around
         if position is None:
-            position = (self.WINDOWWIDTH/2, 10)
+            position = (self.design.WINDOWWIDTH/2, 10)
 
         timer_text = self.BASICFONT.render(
-            f'Time Remaining: {timer.getRemainingTime()}', True, self.SCORECOLOR)
+            f'Time Remaining: {timer.getRemainingTime()}', True, self.design.SCORECOLOR)
         position = (position[0]-timer_text.get_rect().width/2, position[1])
         if self.timer_rect:
             # print("Overwrite rectangle")
-            self.DISPLAYSURF.fill(self.BGCOLOR, rect=self.timer_rect)
+            self.DISPLAYSURF.fill(self.design.BGCOLOR, rect=self.timer_rect)
         else:
             # print("No overwrite")
             self.timer_rect = timer_text.get_rect(topleft=position)
@@ -125,7 +100,7 @@ class GUI:
         # font = pygame.font.Font(None, 36)
         # HARD CODED PLAYER FOR NOW
         score_text = self.BASICFONT.render(
-            f'Total Moves: {self.currentGame.moveCount}', True, self.SCORECOLOR)
+            f'Total Moves: {self.currentGame.moveCount}', True, self.design.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (400, 10))
 
     def startCandyCrush1P(self):
@@ -140,7 +115,7 @@ class GUI:
     def startBejeweled1P(self):
         # FIX LATER
         # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
-        game = Bejeweled(self)
+        game = Bejeweled(1, self)
         self._startGame(game)
 
     def startBejeweled2P(self):
@@ -158,12 +133,12 @@ class GUI:
 
     def drawBoard(self, board, turn=-1):
         self.DISPLAYSURF = self.pygame.display.set_mode(
-            (self.WINDOWWIDTH, self.WINDOWHEIGHT))
-        self.DISPLAYSURF.fill(self.BGCOLOR)
+            (self.design.WINDOWWIDTH, self.design.WINDOWHEIGHT))
+        self.DISPLAYSURF.fill(self.design.BGCOLOR)
         for x in range(self.BOARDWIDTH):
             for y in range(self.BOARDHEIGHT):
                 self.pygame.draw.rect(
-                    self.DISPLAYSURF, self.GRIDCOLOR, self.BOARDRECTS[x][y], 1)
+                    self.DISPLAYSURF, self.design.GRIDCOLOR, self.BOARDRECTS[x][y], 1)
                 tileToDraw = board[x][y]
                 tileColor = tileToDraw.color
                 # tileShape = tileToDraw.shape
@@ -186,12 +161,6 @@ class GUI:
         if self.currentGame.timer:
             self.displayTimer(self.currentGame.timer)
 
-    # def drawCondition(self, num):
-    #     scoreImg = BASICFONT.render(str(num), 1, SCORECOLOR)
-    #     scoreRect = scoreImg.get_rect()
-    #     scoreRect.bottomleft = (10, WINDOWHEIGHT - 6)
-    #     self.DISPLAYSURF.blit(scoreImg, scoreRect)
-
     def getTileCoords(self, mouseX, mouseY):
         # See if the mouse click was on the board
         for x in range(self.BOARDWIDTH):
@@ -203,45 +172,21 @@ class GUI:
     def drawFinalScore(self, score, player=-1):
         if player == -1:
             self.clickContinueTextSurf = self.BASICFONT.render(
-                'Final Score: %s! Press space to return to menu' % (score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
+                'Final Score: %s! Press space to return to menu' % (score), 1, self.design.GAMEOVERCOLOR,
+                self.design.GAMEOVERBGCOLOR)
         elif player != '':
             self.clickContinueTextSurf = self.BASICFONT.render('Winner: %s, Score: %s! Press space to return to menu' % (
-                player, score), 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
+                player, score), 1, self.design.GAMEOVERCOLOR, self.design.GAMEOVERBGCOLOR)
         else:
             self.clickContinueTextSurf = self.BASICFONT.render(
-                'Tie! Press space to return to menu', 1, self.GAMEOVERCOLOR, self.GAMEOVERBGCOLOR)
+                'Tie! Press space to return to menu', 1, self.design.GAMEOVERCOLOR, self.design.GAMEOVERBGCOLOR)
         clickContinueTextRect = self.clickContinueTextSurf.get_rect()
         clickContinueTextRect.center = int(
-            self.WINDOWWIDTH / 2), int(self.WINDOWHEIGHT / 2)
+            self.design.WINDOWWIDTH / 2), int(self.design.WINDOWHEIGHT / 2)
 
         self.DISPLAYSURF.blit(self.clickContinueTextSurf,
                               clickContinueTextRect)
         self.pygame.display.update()
-
-    # Setters to Make TMGE more dynamic
-    def setWindowWidth(self, new_width):
-        self.WINDOWWIDTH = new_width
-
-    def setWindowHeight(self, new_height):
-        self.WINDOWHEIGHT = new_height
-
-    def setGemImageSize(self, new_size):
-        self.GEMIMAGESIZE = new_size
-
-    def setBGColor(self, new_bg_color):
-        self.BGCOLOR = new_bg_color
-
-    def setGridColor(self, new_grid_color):
-        self.GRIDCOLOR = new_grid_color
-
-    def setGameOverColor(self, new_game_over):
-        self.GAMEOVERCOLOR = new_game_over
-
-    def setGameOverBGColor(self, new_game_over):
-        self.GAMEOVERBGCOLOR = new_game_over
-
-    def setScoreColor(self, new_score_color):
-        self.SCORECOLOR = new_score_color
 
 
 if __name__ == '__main__':

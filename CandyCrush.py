@@ -7,6 +7,8 @@ from CandyCrushTileFactory import CandyCrushTileFactory
 class CandyCrush(Game):
     def __init__(self, playerCount, gui):
         self.gui = gui
+        self.gui.design.setBGColor((0, 0, 0))
+        self.gui.design.setGridColor((38, 150, 190))
         horizontal = HorizontalMatch()
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]

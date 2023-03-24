@@ -8,6 +8,8 @@ from BejeweledTileFactory import BejeweledTileFactory
 class Bejeweled(Game):
     def __init__(self, playerCount, gui):
         self.gui = gui
+        self.gui.design.setBGColor((38, 150, 190))
+        self.gui.design.setGridColor((0, 0, 0))
         horizontal = HorizontalMatch()
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
@@ -66,8 +68,24 @@ class Bejeweled(Game):
 
             if self.timer != None:
                 if self.timer.getRemainingTime() <= 0:
-                    winner_score = self.players[0].getScore()
-                    winner = -1
-                    self.gui.drawFinalScore(winner_score, winner)
+                    winner_score = 0
+                    winner = ''
+                    # if two players
+                    if len(self.players) > 1:
+                        if self.players[0].getScore() > self.players[1].getScore():
+                            winner_score = self.players[0].getScore()
+                            winner = 'Player 1'
+                        elif self.players[0].getScore() < self.players[1].getScore():
+                            winner_score = self.players[1].getScore()
+                            winner = 'Player 2'
+                        else:
+                            winner_score = self.players[0].getScore()
+                            winner = ''
+                    else:
+                        # if 1 player
+                        winner_score = self.players[0].getScore()
+                        winner = -1
                     gameFinished = True
+                    self.gui.drawFinalScore(winner_score, winner)
+
 
