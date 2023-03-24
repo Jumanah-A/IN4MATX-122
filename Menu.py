@@ -73,3 +73,4 @@ class Menu:
                 self.chooseNumPlayers, game))
 
         self.menu.add.button('Quit', pygame_menu.events.EXIT)
+        self.updateMenu()
