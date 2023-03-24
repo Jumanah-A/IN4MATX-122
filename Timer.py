@@ -27,10 +27,6 @@ class Timer(object):
             # Here; draw timer using the GUI
             self.gui.displayTimer(self)
         #print(self.timeLeft)
-        self.stopGame()
-
-    def stopGame(self):
-        print("Stop the Game Here")
 
     def resetTimer(self):
         if self.timerThread.is_alive():

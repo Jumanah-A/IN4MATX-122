@@ -49,7 +49,7 @@ class GUI:
         self.DISPLAYSURF = self.pygame.display.set_mode(
             (self.WINDOWWIDTH, self.WINDOWHEIGHT))
         self.BOARDRECTS = []
-        self.ClickContinueTextSurf = None
+        self.clickContinueTextSurf = None
         self.BASICFONT = pygame.font.Font('freesansbold.ttf', 24)
         self.timer_rect = None
 
