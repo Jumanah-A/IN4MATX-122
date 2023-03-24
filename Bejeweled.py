@@ -6,14 +6,15 @@ from BejeweledTileFactory import BejeweledTileFactory
 
 
 class Bejeweled(Game):
-    def __init__(self, playerCount, gui):
+    def __init__(self, playerCount, playerNames, gui):
         self.gui = gui
         self.gui.design.setBGColor((38, 150, 190))
         self.gui.design.setGridColor((0, 0, 0))
         horizontal = HorizontalMatch()
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
-        super().__init__(playerCount, matchingLogic, BejeweledTileFactory(), timer=Timer(self.gui))
+        super().__init__(playerCount, playerNames, matchingLogic,
+                         BejeweledTileFactory(), timer=Timer(self.gui))
 
     def start(self):
         self.board.createBoard()
@@ -39,10 +40,10 @@ class Bejeweled(Game):
                 if coordinates is not None and self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)
                     if self.moveCount != None:
-                         self.moveCount -= 1
-                         self.gui.drawBoard(self.board.grid, self.playerTurn)
-                    else: 
-                         self.gui.drawBoard(self.board.grid)
+                        self.moveCount -= 1
+                        self.gui.drawBoard(self.board.grid, self.playerTurn)
+                    else:
+                        self.gui.drawBoard(self.board.grid)
 
                     isEmpty = False
                     while (not isEmpty):
@@ -55,7 +56,8 @@ class Bejeweled(Game):
                         else:
                             self.players[self.playerTurn].increaseScore(
                                 len(tiles))
-                            self.board.updateBoard(tiles, self.gui, self.playerTurn)
+                            self.board.updateBoard(
+                                tiles, self.gui, self.playerTurn)
 
                     if len(self.players) > 1:
                         if self.playerTurn == 1:
@@ -74,18 +76,16 @@ class Bejeweled(Game):
                     if len(self.players) > 1:
                         if self.players[0].getScore() > self.players[1].getScore():
                             winner_score = self.players[0].getScore()
-                            winner = 'Player 1'
+                            winner = self.players[0].getName()
                         elif self.players[0].getScore() < self.players[1].getScore():
                             winner_score = self.players[1].getScore()
-                            winner = 'Player 2'
+                            winner = self.players[1].getName()
                         else:
                             winner_score = self.players[0].getScore()
-                            winner = ''
+                            winner = 'Draw!'
                     else:
                         # if 1 player
                         winner_score = self.players[0].getScore()
                         winner = -1
                     gameFinished = True
                     self.gui.drawFinalScore(winner_score, winner)
-
-

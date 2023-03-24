@@ -54,26 +54,25 @@ class GUI:
 
         # DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         menu = Menu(self)
-        menu.mainloop(self.DISPLAYSURF)
+        menu.updateMenu()
 
     def displayScore(self, turn=-1):
         # initialze score text object
         # font = pygame.font.Font(None, 36)
-        # HARD CODED PLAYER FOR NOW
         player_text = ""
         if turn == 0:
-            player_text = "Player 1"
+            player_text = self.currentGame.players[0].getName()
         elif turn == 1:
-            player_text = "Player 2"
+            player_text = self.currentGame.players[1].getName()
 
         score_text = self.BASICFONT.render(
-            f'Player 1 Score: {self.currentGame.players[0].score}', True, self.design.SCORECOLOR)
+            f'{self.currentGame.players[0].getName()} Score: {self.currentGame.players[0].score}', True, self.design.SCORECOLOR)
         self.DISPLAYSURF.blit(score_text, (10, 10))
 
         # maybe change this later
         if turn != -1 and len(self.currentGame.players) >= 2:
             score_text2 = self.BASICFONT.render(
-                f'Player 2 Score: {self.currentGame.players[1].score}', True, self.design.SCORECOLOR)
+                f'{self.currentGame.players[1].getName()} Score: {self.currentGame.players[1].score}', True, self.design.SCORECOLOR)
             self.DISPLAYSURF.blit(score_text2, (780, 10))
             turn_text = self.BASICFONT.render(
                 f'Turn: {player_text}', True, self.design.SCORECOLOR)

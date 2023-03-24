@@ -5,14 +5,14 @@ from CandyCrushTileFactory import CandyCrushTileFactory
 
 
 class CandyCrush(Game):
-    def __init__(self, playerCount, gui):
+    def __init__(self, playerCount, playerNames, gui):
         self.gui = gui
         self.gui.design.setBGColor((0, 0, 0))
         self.gui.design.setGridColor((38, 150, 190))
         horizontal = HorizontalMatch()
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
-        super().__init__(playerCount, matchingLogic,
+        super().__init__(playerCount, playerNames, matchingLogic,
                          CandyCrushTileFactory(), moveCount=10)
 
     def start(self):
@@ -71,10 +71,10 @@ class CandyCrush(Game):
                 if len(self.players) > 1:
                     if self.players[0].getScore() > self.players[1].getScore():
                         winner_score = self.players[0].getScore()
-                        winner = 'Player 1'
+                        winner = self.players[0].getName()
                     elif self.players[0].getScore() < self.players[1].getScore():
                         winner_score = self.players[1].getScore()
-                        winner = 'Player 2'
+                        winner = self.players[1].getName()
                     else:
                         winner_score = self.players[0].getScore()
                         winner = ''
