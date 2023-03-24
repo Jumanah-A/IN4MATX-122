@@ -5,8 +5,8 @@ from abc import ABC, abstractmethod
 
 
 class Game(ABC):
-    def __init__(self, playerCount, matchingLogic, tileFactory, timer=None, moveCount=None):
-        self.players = [Player(0, "") for i in range(playerCount)]
+    def __init__(self, playerCount, playerNames, matchingLogic, tileFactory, timer=None, moveCount=None):
+        self.players = [Player(0, playerNames[i]) for i in range(playerCount)]
         self.playerTurn = 0
         self.matchingLogic = matchingLogic
         # change row and col to be included in Game params

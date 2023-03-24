@@ -28,20 +28,21 @@ class Board:
 
     # Shift tiles down by calling gravity() and populates empty tiles with fillBoard()
     def updateBoard(self, setOfCoords, gui, playerTurn=-1):
-        sleep(0.5)
-        self.removeTiles(setOfCoords)
-        gui.drawBoard(self.grid, playerTurn)
+        if (setOfCoords):
+            sleep(0.5)
+            self.removeTiles(setOfCoords)
+            gui.drawBoard(self.grid, playerTurn)
 
-        sleep(0.5)
-        self.applyGravity()
-        gui.drawBoard(self.grid, playerTurn)
+            sleep(0.5)
+            self.applyGravity()
+            gui.drawBoard(self.grid, playerTurn)
 
-        sleep(0.5)
-        self.fillBoard()
-        gui.drawBoard(self.grid, playerTurn)
+            sleep(0.5)
+            self.fillBoard()
+            gui.drawBoard(self.grid, playerTurn)
 
-        sleep(0.5)
-        gui.drawBoard(self.grid, playerTurn)
+            sleep(0.5)
+            gui.drawBoard(self.grid, playerTurn)
 
     # return bool
     def isValidSwap(self, tile_coords, direction: str) -> bool:
