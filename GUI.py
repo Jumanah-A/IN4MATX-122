@@ -137,10 +137,16 @@ class GUI:
         game = CandyCrush(2, self)
         self._startGame(game)
 
-    def startBejeweled(self):
+    def startBejeweled1P(self):
         # FIX LATER
         # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
         game = Bejeweled(self)
+        self._startGame(game)
+
+    def startBejeweled2P(self):
+        # FIX LATER
+        # self.DISPLAYSURF = self.pygame.display.set_mode((1000, 600))
+        game = Bejeweled(2, self)
         self._startGame(game)
 
     # private helper function

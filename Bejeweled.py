@@ -6,12 +6,11 @@ from BejeweledTileFactory import BejeweledTileFactory
 
 
 class Bejeweled(Game):
-    def __init__(self,gui):
+    def __init__(self, playerCount, gui):
         self.gui = gui
         horizontal = HorizontalMatch()
         vertical = VerticalMatch()
         matchingLogic = [horizontal, vertical]
-        playerCount=1
         super().__init__(playerCount, matchingLogic, BejeweledTileFactory(), timer=Timer(self.gui))
 
     def start(self):
@@ -34,7 +33,6 @@ class Bejeweled(Game):
             elif not gameFinished and coordinates != (-1, -1):
                 coordinates = self.gui.getTileCoords(
                     coordinates[0], coordinates[1])
-                print(coordinates, direction)
 
                 if coordinates is not None and self.board.isValidSwap(coordinates, direction):
                     self.board.swapTile(coordinates, direction)

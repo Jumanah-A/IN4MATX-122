@@ -30,7 +30,8 @@ class Menu:
 
         self.menu.add.button('Play Candy Crush 1P', GUI.startCandyCrush1P)
         self.menu.add.button('Play Candy Crush 2P', GUI.startCandyCrush2P)
-        self.menu.add.button('Play Bejeweled', GUI.startBejeweled)
+        self.menu.add.button('Play Bejeweled 1P', GUI.startBejeweled1P)
+        self.menu.add.button('Play Bejeweled 2P', GUI.startBejeweled2P)
         self.menu.add.button('Quit', pygame_menu.events.EXIT)
 
     def mainloop(self, surface):
