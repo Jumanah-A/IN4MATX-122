@@ -43,6 +43,8 @@ class Board:
 
             sleep(0.5)
             gui.drawBoard(self.grid, playerTurn)
+        else:
+            gui.drawBoard(self.grid, playerTurn)
 
     # return bool
     def isValidSwap(self, tile_coords, direction: str) -> bool:
